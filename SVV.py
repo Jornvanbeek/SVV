@@ -29,10 +29,10 @@ def SkinPerimeter(slist):
             z =  (Ca - h / 2) - (Ca - h / 2) / d * (s - d - np.pi * h / 2)
             y = -h / 2 + (h / 2) / d * (s - d - np.pi * h / 2)
             
-    zcoord = np.append(zcoord , z)
-    ycoord = np.append(ycoord , y)
+            zcoord = np.append(zcoord , z)
+            ycoord = np.append(ycoord , y)
     
-    return ycoord, zcoord
+    return zcoord, ycoord
 
             
             
@@ -45,4 +45,17 @@ def SkinPerimeter(slist):
             
 Ca = 0.505
 h = 0.161
+nst = 11
 d = np.sqrt((h/2)**2 + (Ca - h/2)**2)
+circumference = np.pi * h / 2 + 2 * d
+spacing_st = circumference / (nst + 2)
+s_stiffeners = np. linspace (0, circumference , nst + 2) [: -1][1:]
+s_sparcaps = np.array ([d, d + np.pi * h / 2])
+s_booms = np.sort(np.append(s_stiffeners , s_sparcaps ))
+s_skin = np. linspace (0, circumference , 1000)
+
+z_stiffeners , y_stiffeners = SkinPerimeter ( s_stiffeners )
+z_sparcaps , y_sparcaps = SkinPerimeter ( s_sparcaps )
+z_booms , y_booms = SkinPerimeter (s_booms)
+z_skin , y_skin = SkinPerimeter (s_skin)
+
