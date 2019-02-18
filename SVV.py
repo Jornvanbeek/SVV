@@ -25,7 +25,7 @@ def SkinPerimeter(slist):
             z = (Ca - h / 2) + (h / 2) * np.sin(beta)
             y = (h / 2) * np.cos(beta)
             
-        elif s < d * 2 + np.pi * h / 2 :
+        elif s <= d * 2 + np.pi * h / 2 :
             z =  (Ca - h / 2) - (Ca - h / 2) / d * (s - d - np.pi * h / 2)
             y = -h / 2 + (h / 2) / d * (s - d - np.pi * h / 2)
             
