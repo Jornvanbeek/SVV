@@ -42,7 +42,7 @@ def Boomarea(zprime,yprime,Astiff,zcg,tskin,tspar,sparlength):
             #minus 1 here due to symmetry around the zprime axis, no Astiffener due to no stiffener here
             
         #boom on the z-axis
-        elif i == (len(zprime)/2)+1: 
+        elif yprime[i] == 0: 
             Abooms = Astiff
 
         #middle booms excluding spar booms and z-axis boom
