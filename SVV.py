@@ -57,5 +57,6 @@ s_skin = np. linspace (0, circumference , 1000)
 z_stiffeners , y_stiffeners = SkinPerimeter ( s_stiffeners )
 z_sparcaps , y_sparcaps = SkinPerimeter ( s_sparcaps )
 z_booms , y_booms = SkinPerimeter (s_booms)
+y_booms[len(z_booms)] = 0
 z_skin , y_skin = SkinPerimeter (s_skin)
 
