@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Feb 18 14:03:03 2019
-
 @author: tomhu
 """
 
@@ -25,12 +24,12 @@ def SkinPerimeter(slist):
             z = (Ca - h / 2) + (h / 2) * np.sin(beta)
             y = (h / 2) * np.cos(beta)
             
-        elif s < d * 2 + np.pi * h / 2 :
+        elif s <= d * 2 + np.pi * h / 2 :
             z =  (Ca - h / 2) - (Ca - h / 2) / d * (s - d - np.pi * h / 2)
             y = -h / 2 + (h / 2) / d * (s - d - np.pi * h / 2)
             
-            zcoord = np.append(zcoord , z)
-            ycoord = np.append(ycoord , y)
+        zcoord = np.append(zcoord , z)
+        ycoord = np.append(ycoord , y)
     
     return zcoord, ycoord
 
@@ -57,5 +56,5 @@ s_skin = np. linspace (0, circumference , 1000)
 z_stiffeners , y_stiffeners = SkinPerimeter ( s_stiffeners )
 z_sparcaps , y_sparcaps = SkinPerimeter ( s_sparcaps )
 z_booms , y_booms = SkinPerimeter (s_booms)
+y_booms[len(z_booms)/2] = 0
 z_skin , y_skin = SkinPerimeter (s_skin)
-
