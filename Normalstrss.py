@@ -1,7 +1,7 @@
 import numpy as np
 from math import *
 
-def Normalstress(Izz,Iyy,Minternalz,Minternaly,centroid,y_booms,z_booms,boomareas):
+def Normalstress(Izzprimeid,Iyyprimeid,Minternalz,Minternaly,centroid,yprime_booms,zprime_booms,boomareas):
     #normalstress along booms due to bending around z axis
     ycentroid = centroid[0]
     zcentroid = centroid[1]
