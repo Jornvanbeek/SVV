@@ -18,20 +18,20 @@ def center_gravity(c, h, span,t_skin, t_spar, A_st, n_st,element_locations, para
     cg_arc = 4*0.5*h/(3*pi) + c - 0.5*h
 
     z = (cg_arc * A_arc + A_spar * cg_spar + A_skin * 0.5*(c-0.5*h) + sum(element_locations['z_stiffeners'])*A_st)/A_tot
-    parameters['cog_z'] = z
+    parameters['cog_z'] = z - c+0.5*h
     
 
-def ideal_cog(parameters):
+def ideal_cog(element_locations, parameters):
     
-    parameters['ideal_cog_x'] = 1
-    parameters['ideal_cog_x'] = 1
-    parameters['ideal_cog_x'] = 1   
+    z = sum(element_locations['z_booms']*parameters['Abooms'])/sum(parameters['Abooms'])
+    
+    parameters['ideal_cog_z'] = z    
 
 #idealized
 def I_yy(z_booms, parameters):
     #moment of inertia
     A_booms = parameters['Abooms']
-    z_cg =parameters['cog_z']
+    z_cg =parameters['ideal_cog_z']
     I_YY = 0
     
     for i in range(len(z_booms)):

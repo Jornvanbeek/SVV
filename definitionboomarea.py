@@ -1,6 +1,6 @@
 import numpy as np
 
-def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength):
+def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength,parameters):
     Aboomslist = [ ]
     for i in range(len(zprime)):
 
@@ -60,5 +60,6 @@ def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength):
      
         Aboomslist.append(Aboom)
         Abooms = np.array(Aboomslist)
+        parameters['Abooms'] = Abooms
         
-    return(Abooms)
+#    return(Abooms)
