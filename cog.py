@@ -22,6 +22,7 @@ def center_gravity(c, h, span,t_skin, t_spar, A_st, n_st,element_locations, para
     
 
 def ideal_cog(parameters):
+    
     parameters['ideal_cog_x'] = 1
     parameters['ideal_cog_x'] = 1
     parameters['ideal_cog_x'] = 1   
