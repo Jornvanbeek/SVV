@@ -38,7 +38,7 @@ def SkinPerimeter(slist,c,h,nst):
         
             
             
-def skin_init( c = 0.505,h = 0.161,nst = 11):            
+def skin_init( c,h,nst):            
     global d
     d = np.sqrt((((h/2)**2 + c - h/2)**2))
     loc = dict()
@@ -54,6 +54,7 @@ def skin_init( c = 0.505,h = 0.161,nst = 11):
     loc['z_sparcaps'] , loc['y_sparcaps'] = SkinPerimeter ( s_sparcaps,c,h,nst )
     loc['z_booms'] , loc['y_booms'] = SkinPerimeter (s_booms,c,h,nst)
     loc['z_skin'] , loc['y_skin'] = SkinPerimeter (s_skin,c,h,nst)
+    loc['s_booms'] = s_booms
     
     return loc
     

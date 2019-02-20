@@ -4,7 +4,8 @@ from math import *
 import matplotlib.pyplot as plt
 from definitionboomarea import Boomarea
 from SVV import skin_init
-from cog import center_gravity
+from cog import center_gravity, I_yy, I_zz, I_zznon
+parameters = dict()
 
 c = 0.505                   #m, chord lenght
 l = 1.611                   #m, span
@@ -24,11 +25,17 @@ d_3 = 1.245/100.            #cm, displacement hinge 3
 theta = 30.                 #degrees, max upward deflection
 P_2 = 49.2*1000             #kN, load actuator 2
 q = 3.86*1000               #kN/m, aerodynamic load
+
 skin_length = np.sqrt( (c-h*0.5)**2 + (0.5*h)**2) #length of upper or lower angled part of skin in meters
-slist = 1
+A_stiffener = t_stiffener * (h_stiffener + w_stiffener)
 
 element_locations = skin_init(c,h,n_stiffener)
-cog = center_gravity(c, h, l, t_skin, t_spar, t_stiffener, h_stiffener,w_stiffener,n_stiffener,element_locations)
+center_gravity(c, h, l, t_skin, t_spar, A_stiffener, n_stiffener,element_locations, parameters)
+I_zznon(element_locations['y_stiffeners'],t_spar,h,c, t_skin,skin_length, A_stiffener, parameters)
+Boomarea(element_locations['z_booms'],element_locations['y_booms'],A_stiffener,element_locations['s_booms'],t_skin,t_spar,h, parameters)
+I_yy(element_locations['z_booms'], parameters)
+I_zz(element_locations['y_booms'], parameters)
+
 
 
 
