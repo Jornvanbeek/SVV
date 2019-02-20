@@ -17,16 +17,16 @@ def SkinPerimeter(slist,c,h,nst):
     for s in slist:
         
         if s < d :
-             z = (c - h / 2) / d * s
+             z = (c - h / 2) / d * s - c + h/2
              y = h / 2 / d * s
             
         elif s < d + np.pi * h / 2:
             beta = (s - d) / (h / 2)
-            z = (c - h / 2) + (h / 2) * np.sin(beta)
+            z = (c - h / 2) + (h / 2) * np.sin(beta) - c + h/2
             y = (h / 2) * np.cos(beta)
             
         elif s <= d * 2 + np.pi * h / 2 :
-            z =  (c - h / 2) - (c - h / 2) / d * (s - d - np.pi * h / 2)
+            z =  (c - h / 2) - (c - h / 2) / d * (s - d - np.pi * h / 2) - c + h/2
             y = -h / 2 + (h / 2) / d * (s - d - np.pi * h / 2)
         y = round(y, 13)
         z = round(z, 13)
