@@ -4,7 +4,7 @@ from math import *
 import matplotlib.pyplot as plt
 from definitionboomarea import Boomarea
 from SVV import skin_init
-from cog import center_gravity, I_yy, I_zz, I_zznon
+from cog import center_gravity, I_yy, I_zz, I_zznon, ideal_cog
 parameters = dict()
 
 c = 0.505                   #m, chord lenght
@@ -33,8 +33,10 @@ element_locations = skin_init(c,h,n_stiffener)
 center_gravity(c, h, l, t_skin, t_spar, A_stiffener, n_stiffener,element_locations, parameters)
 I_zznon(element_locations['y_stiffeners'],t_spar,h,c, t_skin,skin_length, A_stiffener, parameters)
 Boomarea(element_locations['z_booms'],element_locations['y_booms'],A_stiffener,element_locations['s_booms'],t_skin,t_spar,h, parameters)
+ideal_cog(element_locations, parameters)
 I_yy(element_locations['z_booms'], parameters)
 I_zz(element_locations['y_booms'], parameters)
+
 
 
 
