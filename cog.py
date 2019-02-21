@@ -1,7 +1,7 @@
 import numpy as np
 from math import pi
 
-def center_gravity(c, h, span,t_skin, t_spar, A_st, n_st,element_locations, parameters):
+def center_gravity(element_locations, parameters, c = 0.505, h = 16.1/100., span = 1.611,t_skin = 1.1/1000., t_spar = 2.4/1000., A_st = 3.6*10**-5, n_st = 11 ):
     
     y = 0
     x = .5* span
@@ -9,28 +9,22 @@ def center_gravity(c, h, span,t_skin, t_spar, A_st, n_st,element_locations, para
     parameters['cog_y'] = y
     
     
-    A_arc = 0.5 * h * pi * t_skin
-    A_spar = t_spar * h
-    A_skin = (((c-h)**2+(0.5*h)**2)**0.5)*2*t_skin
-    A_tot = A_st * n_st + A_arc + A_spar + A_skin
-    
-    cg_spar = c-0.5*h
-    cg_arc = 4*0.5*h/(3*pi) + c - 0.5*h
-
-    z = (cg_arc * A_arc + A_spar * cg_spar + A_skin * 0.5*(c-0.5*h) + sum(element_locations['z_stiffeners'])*A_st)/A_tot
-    parameters['cog_z'] = z - c+0.5*h
+    parameters['cog_z'] = ((t_skin*h**2)/3 + parameters['skin_length']*t_skin*(-c+0.5*h) + sum(A_st*element_locations['z_stiffeners']))/(0.5*h*t_skin+h*t_spar+parameters['skin_length']*2*t_skin+A_st*n_st)
     
 
 def ideal_cog(element_locations, parameters):
     
-    z = sum(element_locations['z_booms']*parameters['Aboomsz'])/sum(parameters['Aboomsz'])
+    z = sum(element_locations['z_booms']*parameters['Aboomsy'])/sum(parameters['Aboomsy'])
     
-    parameters['ideal_cog_z'] = z    
+    parameters['ideal_cog_z'] = z   
+    
+    y = sum(element_locations['y_booms']*parameters['Aboomsz'])/sum(parameters['Aboomsz'])
+    parameters['ideal_cog_y'] = y  #this value should be zero
 
 #idealized
 def I_yy(z_booms, parameters):
     #moment of inertia
-    A_booms = parameters['Aboomsz']
+    A_booms = parameters['Aboomsy']
     z_cg =parameters['ideal_cog_z']
     I_YY = 0
     
@@ -42,7 +36,7 @@ def I_yy(z_booms, parameters):
 
 def I_zz(y_booms, parameters):
     #moment of inertia
-    A_booms = parameters['Aboomsy'] #should be checked
+    A_booms = parameters['Aboomsz']
     I_ZZ = 0
     
     for i in range(len(y_booms)):
@@ -50,10 +44,11 @@ def I_zz(y_booms, parameters):
         
     parameters['Izz'] = I_ZZ
     
-def I_zznon(y_stiff,t_spar,h,c, t_skin,skinlength, A_stiff, parameters):
+def I_zznon(parameters, y_stiff,t_spar = 2.4/1000.,h = 16.1/100.,c = 0.505, t_skin= 1.1/1000., A_stiff = 3.6*10**-5):
+    
     I_zzspar = t_spar*(h)**3/12
     I_zzLE = pi*t_skin*(0.5*h)**3*0.5
-    I_zzTE = 2*(c-0.5*h)**3*t_skin*(0.5*h/skinlength)**2/12
+    I_zzTE = 2*(c-0.5*h)**3*t_skin*(0.5*h/parameters['skin_length'])**2/12
     I_zzstiff = 0
     for i in range(len(y_stiff)):
         
