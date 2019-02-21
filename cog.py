@@ -23,14 +23,14 @@ def center_gravity(c, h, span,t_skin, t_spar, A_st, n_st,element_locations, para
 
 def ideal_cog(element_locations, parameters):
     
-    z = sum(element_locations['z_booms']*parameters['Abooms'])/sum(parameters['Abooms'])
+    z = sum(element_locations['z_booms']*parameters['Aboomsz'])/sum(parameters['Aboomsz'])
     
     parameters['ideal_cog_z'] = z    
 
 #idealized
 def I_yy(z_booms, parameters):
     #moment of inertia
-    A_booms = parameters['Abooms']
+    A_booms = parameters['Aboomsz']
     z_cg =parameters['ideal_cog_z']
     I_YY = 0
     
@@ -42,7 +42,7 @@ def I_yy(z_booms, parameters):
 
 def I_zz(y_booms, parameters):
     #moment of inertia
-    A_booms = parameters['Abooms']
+    A_booms = parameters['Aboomsy'] #should be checked
     I_ZZ = 0
     
     for i in range(len(y_booms)):
@@ -57,7 +57,7 @@ def I_zznon(y_stiff,t_spar,h,c, t_skin,skinlength, A_stiff, parameters):
     I_zzstiff = 0
     for i in range(len(y_stiff)):
         
-        I_zzstiff = I_zzstiff + A_stiff * y_stiff**2
+        I_zzstiff = I_zzstiff + A_stiff * y_stiff[i]**2
         
         
         

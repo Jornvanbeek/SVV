@@ -63,7 +63,7 @@ def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength,parameters):
             Aboomz = Astiff + ((tskin*dprev)/6)*(2+(yprime[i-1]/yprime[i])) \
             + ((tskin*dnext)/6)*(2+(yprime[i+1]/yprime[i]))
             
-            Aboomslistz.append(Aboomz)
+        Aboomslistz.append(Aboomz)
     Aboomsz = np.array(Aboomslistz)
     parameters['Aboomsz'] = Aboomsz
             
@@ -123,5 +123,5 @@ def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength,parameters):
             + ((tskin*dnext)/6)*(2+((neutralaxisy-zprime[i+1])/(neutralaxisy-zprime[i])))
      
         Aboomslisty.append(Aboomy)
-        Aboomsy = np.array(Aboomslisty)
-        parameters['Aboomsy'] = Aboomsy
+    Aboomsy = np.array(Aboomslisty)
+    parameters['Aboomsy'] = Aboomsy
