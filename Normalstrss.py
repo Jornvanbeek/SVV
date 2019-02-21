@@ -1,9 +1,9 @@
 import numpy as np
 
-def Normalstress(parameters,Izzprimeid,Iyyprimeid,Minternalz,Minternaly,centroid,yprime_booms,zprime_booms):
+def Normalstress(parameters,Izzprimeid,Iyyprimeid,Minternalz,Minternaly,centroidid,yprime_booms,zprime_booms):
     #normalstress along booms due to bending around z axis
-    ycentroid = centroid[0]
-    zcentroid = centroid[1]
+    ycentroid = centroidid[0]
+    zcentroid = centroidid[1]
     
     totalstressz = np.zeros[len(yprime_booms),len(Minternalz)]
     totalstressy = np.zeros[len(yprime_booms),len(Minternalz)]
