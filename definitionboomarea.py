@@ -1,6 +1,9 @@
 import numpy as np
+boomsspacing = np.array([0.09290489, 0.18580978, 0.27871468])
+zprime = np.array([-0.33299203, -0.24148406, -0.1499761 ])
+yprime = np.array([ 0.0173531 ,  0.0347062 ,  0.0520593 ])
 
-def Boomarea(zprime,yprime,Astiff,s_booms,tskin,tspar,sparlength,parameters):
+def Boomarea(parameters,zprime = zprime, yprime = yprime,Astiff = 3.6e-05,s_booms = boomsspacing ,tskin = 1.1/1000. ,tspar= 2.4/1000. ,sparlength= 16.1/100. ):
     Aboomslistz = [ ]
     Aboomslisty = [ ]
     neutralaxisy = parameters['cog_z']
