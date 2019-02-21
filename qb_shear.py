@@ -71,3 +71,5 @@ def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
         qb = - Sy / I_zz * B_booms[k] * y_booms[k]
         qb_3 = append(qb_3, qb + qb_3[-1])
 
+    return qb_spar
+
