@@ -82,7 +82,7 @@ def Boomarea(parameters,zprime = zprime, yprime = yprime,Astiff = 3.6e-05,s_boom
             #Area of first boom
             Aboomy = Astiff \
             + ((tskin*dprev)/6)*(2+((neutralaxisy-zprime[-1])/(neutralaxisy-zprime[i]))) \
-            + ((tskin*dnext)/6)*(2+((neutralaxisy-zprime[-1])/(neutralaxisy-zprime[i])))
+            + ((tskin*dnext)/6)*(2+((neutralaxisy-zprime[i+1])/(neutralaxisy-zprime[i])))
             
             
         #Last boom 
