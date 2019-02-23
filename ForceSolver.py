@@ -10,25 +10,25 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-Ca = 0.515                 #m chord length
-l = 2.691                 #m span
-x1 = 0.174             #m x-location hinge 1
-x2 = 1.051                 #m x-location hinge 2
-x3 = 2.512                 #m x-location hinge 3 
-xa = 0.3                 #m distance between actuator 1 & 2
-h  = 0.248               #m aileron height
-d1 = 0.01034            #m vertical displacement hinge 1
-d3 = 0.02066         #m vertical displacement hinge 3
-theta=m.radians(25.0)       #deg max upward deflection
-P  = -20600.0               #N load actuator 2
-q  = -1000.0                #N/m aerodynamic load 
+Ca = 0.505                 #m chord length
+l = 1.611                 #m span
+x1 = 0.125            #m x-location hinge 1
+x2 = 0.498                #m x-location hinge 2
+x3 = 1.494                #m x-location hinge 3 
+xa = 0.245                 #m distance between actuator 1 & 2
+h  = 0.161               #m aileron height
+d1 = 0.00389          #m vertical displacement hinge 1
+d3 = 0.01245         #m vertical displacement hinge 3
+theta=m.radians(30.0)       #deg max upward deflection
+P  = -49200.0               #N load actuator 2
+q  = -3860.0                #N/m aerodynamic load 
 E  = 73.1*10**9             #Pa E-modulus
-Izz = 1*10**-5  #m^4 moment of inertia z
-Iyy = 4.01*10**-5    #m^4 moment of inertia y 
-zsc = -0.
+Izz = 4.609*10**-6  #m^4 moment of inertia z
+Iyy = 7.797*10**-5    #m^4 moment of inertia y 
+zsc = -0.027
 ysc = 0.0
 G = 28. * ( 10. ** 9. )
-J = 7.046*10**-5  
+J = 7.268*10**-6 
 
 n =1000 #number of elements
 
@@ -154,3 +154,4 @@ for i in range(len(Vz)):
 #plt.grid()
 #plt.show()
 
+print(A)
