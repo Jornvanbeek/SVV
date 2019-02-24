@@ -10,29 +10,29 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-
-Ca = 0.605                 #m chord length
-l = 2.661                 #m span
-x1 = 0.172                #m x-location hinge 1
-x2 = 1.211                 #m x-location hinge 2
-x3 = 2.591                 #m x-location hinge 3 
-xa = 0.35                  #m distance between actuator 1 & 2
-h  = 0.205               #m aileron height
-d1 = 0.0454            #m vertical displacement hinge 1
-d3 = 0.0724         #m vertical displacement hinge 3
-theta=m.radians(28.0)       #deg max upward deflection
-P  = -97400.0               #N load actuator 2
-q  = -5540.0                #N/m aerodynamic load 
+Ca = 0.505                 #m chord length
+l = 1.611                 #m span
+x1 = 0.125            #m x-location hinge 1
+x2 = 0.498                #m x-location hinge 2
+x3 = 1.494                #m x-location hinge 3 
+xa = 0.245                 #m distance between actuator 1 & 2
+h  = 0.161               #m aileron height
+d1 = 0.00389          #m vertical displacement hinge 1
+d3 = 0.01245         #m vertical displacement hinge 3
+theta=m.radians(30.0)       #deg max upward deflection
+P  = -49200.0               #N load actuator 2
+q  = -3860.0                #N/m aerodynamic load 
 E  = 73.1*10**9             #Pa E-modulus
-Izz = 1.0121766965*10**-5  #m^4 moment of inertia z
-Iyy = 7.34770871618*10**-5    #m^4 moment of inertia y 
-zsc = -0.121
+Izz = 4.609*10**-6  #m^4 moment of inertia z
+Iyy = 7.797*10**-5    #m^4 moment of inertia y 
+zsc = -0.027
 ysc = 0.0
 G = 28. * ( 10. ** 9. )
-J = 7.046*10**-5  
+J = 7.268*10**-6 
+
 
 def force_solver(parameters, n = 10000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3, xa = xa, h = h, d1 = d1, d3 = d3, theta = theta, P = P, q = q, E = E, Izz = Izz, Iyy = Iyy, zsc = zsc,ysc = ysc, G = G, J = J ):
-
+    
     M = np.matrix([[0,0,1,0,0,0,0,0,0,0,0,0],               #Fx
                   [1,0,0,1,0,1,0,m.sin(theta),0,0,0,0],     #Fy
                   [0,1,0,0,1,0,1,m.cos(theta),0,0,0,0],     #Fz
@@ -156,7 +156,6 @@ def force_solver(parameters, n = 10000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x
     #plt.show()
     
     print(A)
-    
     parameters['Equations?'] = M
     parameters['Reaction_forces?'] = R
     parameters['Shear_z'] =Vz
@@ -166,7 +165,9 @@ def force_solver(parameters, n = 10000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x
     parameters['Torque'] =Tx
     parameters['twist'] =twist
     parameters['spanwise_locations'] =xlist
-    
+
+
+
 
 parameters = dict()
-force_solver(parameters)
+force_solver(parameters) 
