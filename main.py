@@ -100,9 +100,9 @@ Normalstress(parameters,element_locations)
 #    plt.plot(x, parameters['normalstress'][i])
 #plt.show()
 
-
-qb_z(parameters,element_locations)
-qb_y(parameters,element_locations)
+#
+#qb_z(parameters,element_locations)
+#qb_y(parameters,element_locations)
 
 
 
