@@ -6,6 +6,10 @@ from definitionboomarea import Boomarea
 from SVV import skin_init
 from cog import center_gravity, I_yy, I_zz, I_zznon, ideal_cog
 from ForceSolver import force_solver
+from Normalstrss import Normalstress
+from plot import plot
+from qb_shear import qb_z, qb_y
+
 
 parameters = dict()
 
@@ -28,6 +32,10 @@ d_3 = 1.245/100.            #cm, displacement hinge 3
 theta = 30.                 #degrees, max upward deflection
 P_2 = 49.2*1000             #kN, load actuator 2
 q = 3.86*1000               #kN/m, aerodynamic load
+
+G = 28. * ( 10. ** 9. )
+E  = 73.1*10**9             #Pa E-modulus
+  
 
 
 parameters['skin_length'] = 0.43206538856983207
@@ -80,21 +88,21 @@ I_zz(element_locations['y_booms'], parameters)
 
 force_solver(parameters)
 
+Normalstress(parameters,element_locations)
 
 
+#Z = plot(parameters, element_locations)
+#
+#
+#x = np.arange(0,len(parameters['normalstress'][0]))
+#fig= plt.figure()
+#for i in range(len(parameters['normalstress'][:,0])):
+#    plt.plot(x, parameters['normalstress'][i])
+#plt.show()
 
 
-
-
-
-
-
-
-
-
-
-
-
+qb_z(parameters,element_locations)
+qb_y(parameters,element_locations)
 
 
 

@@ -1,12 +1,15 @@
 import numpy as np
 
-def Normalstress(parameters,element_locations,Izzprimeid,Iyyprimeid,Minternalz,Minternaly,centroidid,yprime_booms,zprime_booms):
+def Normalstress(parameters,element_locations):
     #normalstress along booms due to bending around z axis
     ycentroid = parameters['ideal_cog_y']
-    zcentroid = parameters['iedal_cog_z']
+    zcentroid = parameters['ideal_cog_z']
+    Iyyprimeid = parameters['Iyy']
+    Izzprimeid = parameters['Izz']
     
-    totalstressz = np.zeros[len(yprime_booms),len(Minternalz)]
-    totalstressy = np.zeros[len(yprime_booms),len(Minternalz)]
+    
+    totalstressz = np.zeros([len(element_locations['y_booms']),len(parameters['Moment_z'])])
+    totalstressy = np.zeros([len(element_locations['y_booms']),len(parameters['Moment_z'])])
     
     #Calculates normal stress due to bending around zprime axis
     for i in range(len(parameters['Moment_z'])):
@@ -16,7 +19,7 @@ def Normalstress(parameters,element_locations,Izzprimeid,Iyyprimeid,Minternalz,M
             
     #Calculates normal stress due to bending around yprime axis
     for i in range(len(parameters['Moment_y'])):
-        for j in range(len(zprime_booms)):
+        for j in range(len(element_locations['z_booms'])):
             sigmayx = (parameters['Moment_y'][i]*(zcentroid-element_locations['z_booms'][j]))/Iyyprimeid
             totalstressy[j,i] = sigmayx
     
