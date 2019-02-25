@@ -43,9 +43,9 @@ def SkinPerimeter(slist,c,h,nst):
             
             
             
-def skin_init( c = 0.505,h = 16.1/100.,nst = 11):            
+def skin_init( c = 0.505,h = 16.1/10.,nst = 11):            
     global d
-    d = np.sqrt((((h/2)**2 + c - h/2)**2))
+    d = np.sqrt(((h/2)**2 + (c - h/2)**2))
     loc = dict()
     
     circumference = np.pi * h / 2 + 2 * d
