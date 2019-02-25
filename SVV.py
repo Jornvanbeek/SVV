@@ -36,21 +36,14 @@ def SkinPerimeter(slist,c,h,nst):
     return zcoord, ycoord
 
             
-            
-
-            
-            
-            
-            
-            
-def skin_init( c = 0.505,h = 16.1/10.,nst = 11):            
+def skin_init( c = 0.505,h = 16.1/100.,nst = 11):            
     global d
     d = np.sqrt(((h/2)**2 + (c - h/2)**2))
     loc = dict()
     
     circumference = np.pi * h / 2 + 2 * d
-    spacing_st = circumference / (nst + 2)
-    s_stiffeners = np. linspace (0, circumference , nst + 2) [: -1][1:]
+    spacing_st = circumference / nst
+    s_stiffeners = np.arange(spacing_st/2,circumference,spacing_st)
     s_sparcaps = np.array ([d, d + np.pi * h / 2])
     s_booms = np.sort(np.append(s_stiffeners , s_sparcaps ))
     s_skin = np. linspace (0, circumference , 1000)
@@ -60,7 +53,7 @@ def skin_init( c = 0.505,h = 16.1/10.,nst = 11):
     loc['z_booms'] , loc['y_booms'] = SkinPerimeter (s_booms,c,h,nst)
     loc['z_skin'] , loc['y_skin'] = SkinPerimeter (s_skin,c,h,nst)
     loc['s_booms'] = s_booms
-    
+
     return loc
     
           
