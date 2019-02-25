@@ -159,16 +159,16 @@ def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h
 # finding matrix A and y to find the shear flow in the sections
 #matrix A has entries a(1-3)(1-3)
 
-    a11 = ((semi)/(t_sk *G) + h_a/(t_sp * G)) / (2 * A_LE)
-    a12 = -h_a /( t_sk *G) /(2 * A_LE)
+    a11 = ((semi)/(t_sk *G) + h_a/(t_sp * G)) / (2 * A_cell1)
+    a12 = -h_a /( t_sk *G) /(2 * A_cell2)
     a13 = -1
 
-    a21 = - h_a / (t_sp * G ) /(2 *A_TE)
-    a22 = (2 * d/ (t_sk * G ) + h_a / ( t_sp * G)) / (2 * A_TE)
+    a21 = - h_a / (t_sp * G ) /(2 *A_cell2)
+    a22 = (2 * d/ (t_sk * G ) + h_a / ( t_sp * G)) / (2 * A_cell2)
     a23 = -1
 
-    a31 = 2 * A_LE
-    a32 = 2 * A_TE
+    a31 = 2 * A_cell1
+    a32 = 2 * A_cell2
     a33 = 0
 
     y1 = -o_LE
