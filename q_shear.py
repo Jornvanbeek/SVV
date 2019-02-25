@@ -1,50 +1,67 @@
-from numpy import *
+import numpy as np
+from math import pi
 
 # shear flow qb in the z' axis
 
 
 
-def qb_z(I_yy, z_booms, B_booms, s_booms, S_z, z_cg):
-    qb_1 = array([0])
-    qb_2 = array([0])
+def qb_z(parameters, element_locations,h_a,d,n_stiffener):
+    qb_1 = np.array([0])
+    qb_2 = np.array([0])
     qb_spar = 0
+    I_yy = parameters['Iyy']
+    z_booms = element_locations['z_booms']
+    B_booms = parameters['Aboomsz'] #check if this should be y or z
+    s_booms = element_locations['s_booms']
+    S_z = parameters['Shear_z']
+    z_cg = parameters['cog_z']
+    
+    
 
-
+    qb = 0
     for i in range(len(z_booms)):
-        if s_booms([i])<d:
+        if s_booms[i]<d:
             qb = - (S_z/I_yy)*(B_booms[i] * (z_booms[i]-z_cg))
-            qb_1 = append(qb_1, qb + qb_1[i-1])
+            qb_1 = np.append(qb_1, qb + qb_1[i-1])
 
     arc = (pi * h_a) / 4
-    j_1 = where(logical_and(s_booms > d, s_booms < arc + d))[0][::-1]
+    j_1 = np.where(np.logical_and(s_booms > d, s_booms < arc + d))[0][::-1]
 
     for j in j_1:
         qb = qb - (S_z/I_yy)*(B_booms[j] * (z_booms[j]-z_cg))
-        qb_2 = append(qb_2, qb + qb_2[j-j_1[0]-1])
-    qb_sym = append(qb_1, qb_2[::-1])
+        qb_2 = np.append(qb_2, qb + qb_2[j-j_1[0]-1])
+    qb_sym = np.append(qb_1, qb_2[::-1])
 
-    if n_stiffner % 2 ==0:
-        qb_panel = append(qb_sym, qb_sym[::-1])
+    if n_stiffener % 2 ==0:
+        qb_panel = np.append(qb_sym, qb_sym[::-1])
     else:
-        qb_panel = append(qb_sym, qb_sym[::-1][1:])
+        qb_panel = np.append(qb_sym, qb_sym[::-1][1:])
 
 
 
-    return qb_panel, qb_spar
+    parameters['qb_spar_z'] = qb_spar
+    parameters['qb_panel'] = qb_panel
+    
 
 
 # shear flow qb in the y' axis
-def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
-    qb_1 = array([0])
-    qb_2 = array([0])
-    qb_3 = array([])
+def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h_a,t_sk,t_sp,G, C_a):
+    qb_1 = np.array([0])
+    qb_2 = np.array([0])
+    qb_3 = np.array([0])
+    
+    I_zz = parameters['Izz']
+    y_booms = element_locations['y_booms']
+    B_booms = parameters['Aboomsy'] #check if this should be y or z
+    s_booms = element_locations['s_booms']
+    S_y = parameters['Shear_y']
 
 
 
     for i in range(len(y_booms)):
-        if s_booms([i]) < d:
+        if s_booms[i] < d:
             qb = - (S_y / I_zz) * (B_booms[i] * (y_booms[i]))
-            qb_1 = append(qb_1, qb + qb_1[-1])
+            qb_1 = np.append(qb_1, qb + qb_1[-1])
 
         else:
             spar_number1 = i
@@ -55,21 +72,21 @@ def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
     semi = (pi * h_a) / 2
     circ = (pi * h_a)
 
-    j_1 = where(logical_and(s_booms > d, s_booms <= semi + d))[0][:-1]
+    j_1 = np.where(np.logical_and(s_booms > d, s_booms <= semi + d))[0][:-1]
 
     for j in j_1:
         qb = - (S_y / I_zz) * (B_booms[j] * (y_booms[j]))
-        qb_2 = append(qb_2, qb + qb_2[-1])
+        qb_2 = np.append(qb_2, qb + qb_2[-1])
 
-    k_1 = where(logical_and(s_booms >= (d + semi), s_booms < circ))[0][1:]
+    k_1 = np.where(np.logical_and(s_booms >= (d + semi), s_booms < circ))[0][1:]
 
     spar_number2 = j_1[-1] + 1
 
-    qb_3 = append(qb_3, qb_2[-1] + qb_spar - (S_y / I_zz) * (B_booms[spar_number2] * (y_booms[spar_number2])))
+    qb_3 = np.append(qb_3, qb_2[-1] + qb_spar - (S_y / I_zz) * (B_booms[spar_number2] * (y_booms[spar_number2])))
 
     for k in k_1:
-        qb = - Sy / I_zz * B_booms[k] * y_booms[k]
-        qb_3 = append(qb_3, qb + qb_3[-1])
+        qb = - S_y / I_zz * B_booms[k] * y_booms[k]
+        qb_3 = np.append(qb_3, qb + qb_3[-1])
 
 
 #q_0 and angle of twist of airfoil
@@ -108,7 +125,7 @@ def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
 
     #moment arm
 
-    r = (h_a /2) * cos(arctan2((h_a/2), C_a - h_a / 2))
+    r = (h_a /2) * np.cos(np.arctan2((h_a/2), C_a - h_a / 2))
 
     M = 0
 
@@ -159,10 +176,10 @@ def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
     y3 = -S_y * (z_Sy - (C_a -h_a/2)) - M
 
 
-    A = array([[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]])
-    y = array([y1, y2, y3])
+    A = np.array([[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]])
+    y = np.array([y1, y2, y3])
 
-    q0_LE, q0_TE, RoT = dot(linalg.inv(A), y)
+    q0_LE, q0_TE, RoT = np.dot(np.linalg.inv(A), y)
 
     q1 = qb_1 + q0_TE
     q2 = qb_2 + q0_LE
@@ -170,8 +187,12 @@ def qb_y(I_zz, y_booms, B_booms, s_booms, S_y):
 
     q_spar = qb_spar + q0_TE + q0_LE
 
-    q_skin = append(q1,q2,q3)
-
+    q_skin = np.append(q1,q2,q3)
+    
+    parameters['qb_spar_y'] = q_spar
+    parameters['qb_skin'] = q_skin
+    parameters['rot'] = RoT
+    
     return q_skin, q_spar, RoT
 
 
