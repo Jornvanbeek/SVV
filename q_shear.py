@@ -160,7 +160,7 @@ def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h
 #matrix A has entries a(1-3)(1-3)
 
     a11 = ((semi)/(t_sk *G) + h_a/(t_sp * G)) / (2 * A_cell1)
-    a12 = -h_a /( t_sk *G) /(2 * A_cell2)
+    a12 = -h_a /( t_sk *G) /(2 * A_cell1)
     a13 = -1
 
     a21 = - h_a / (t_sp * G ) /(2 *A_cell2)
