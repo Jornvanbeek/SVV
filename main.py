@@ -8,33 +8,23 @@ from cog import center_gravity, I_yy, I_zz, I_zznon, ideal_cog
 from ForceSolver import force_solver
 from Normalstrss import Normalstress
 from plot import plot
-from qb_shear import qb_z, qb_y
-
+from q_shear import qb_z, qb_y
+from q_torque import qb_T
+from input_parameters import inputparameters
 
 parameters = dict()
+inputparameters(parameters)
 
-
-c = 0.505                   #m, chord lenght
-l = 1.611                   #m, span
-x_1 = 0.125                 #m, x location of hinge 1
-x_2 = 0.498                 #m, x location of hinge 2
-x_3 = 1.494                 #m, x location of hinge 3
-x_a = 24.5/100.             #cm, distance between actuator 1 and 2
-h = 16.1/100.               #cm, height of aileron
-t_skin = 1.1/1000.          #mm, thickness
-t_spar = 2.4/1000.          #mm, thickness
-t_stiffener = 1.2/1000.     #mm, thickness
-h_stiffener = 1.3/100.      #cm, height
-w_stiffener = 1.7/100.      #cm, width of stiffener
-n_stiffener = 11            #number of stiffeners
-d_1 = 0.389/100.            #cm, displacement hinge 1
-d_3 = 1.245/100.            #cm, displacement hinge 3
-theta = 30.                 #degrees, max upward deflection
-P_2 = 49.2*1000             #kN, load actuator 2
-q = 3.86*1000               #kN/m, aerodynamic load
-
-G = 28. * ( 10. ** 9. )
-E  = 73.1*10**9             #Pa E-modulus
+c = parameters['c']
+h = parameters['h']
+l = parameters['l']
+n_stiffener = parameters['n_stiffener']
+t_stiffener = parameters['t_stiffener']
+h_stiffener = parameters['h_stiffener']
+w_stiffener = parameters['w_stiffener']
+t_skin = parameters['t_skin']
+t_spar = parameters['t_spar']
+d_1 = parameters['d_1']
   
 
 
@@ -73,6 +63,8 @@ if round(parameters['Aboomsy'][1]/correctans_y, 8)!= 1 or round(parameters['Aboo
 element_locations = skin_init(c,h,n_stiffener)
 
 parameters['skin_length'] = np.sqrt( (c-h*0.5)**2 + (0.5*h)**2) #length of upper or lower angled part of skin in meters, checked
+parameters['A_cell1'] = np.pi*(h/2)**2/2 #inside de circular part
+parameters['A_cell2'] = h*(c-h/2)/2 #inside the triangular part
 
 A_stiffener = t_stiffener * (h_stiffener + w_stiffener)
 
@@ -91,6 +83,21 @@ force_solver(parameters)
 Normalstress(parameters,element_locations)
 
 
+qb_z(parameters,element_locations)
+qb_y(parameters,element_locations)
+
+qb_T(parameters, element_locations)
+
+
+
+
+
+
+
+
+
+
+
 #Z = plot(parameters, element_locations)
 #
 #
@@ -100,9 +107,6 @@ Normalstress(parameters,element_locations)
 #    plt.plot(x, parameters['normalstress'][i])
 #plt.show()
 
-#
-#qb_z(parameters,element_locations)
-#qb_y(parameters,element_locations)
 
 
 
