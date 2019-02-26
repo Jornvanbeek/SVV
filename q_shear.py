@@ -49,15 +49,14 @@ def qb_z(parameters, element_locations):
 
 # shear flow qb in the y' axis
 def qb_y(parameters, element_locations):
-    qb_1 = np.array([0])
-    qb_2 = np.array([0])
-    qb_3 = np.array([0])
+    
+
     
     I_zz = parameters['Izz']
     y_booms = element_locations['y_booms']
     B_booms = parameters['Aboomsy'] #check if this should be y or z
     s_booms = element_locations['s_booms']
-    S_y = parameters['Shear_y']
+    S_y = np.transpose(parameters['Shear_y'])
     A_cell1 = parameters['A_cell1']
     A_cell2 = parameters['A_cell2']
     h_a = parameters['h']
@@ -65,20 +64,28 @@ def qb_y(parameters, element_locations):
     t_sp = parameters['t_spar']
     G = parameters['G']
     C_a = parameters['c']
-    d = parameters['skin_length']#### wtf is this
-
+    d = parameters['skin_length']
+    z_Sy = parameters['zcs']
+    
+    qb_1 = np.zeros([1,len(S_y[0])])
+    qb_2 = np.zeros([1,len(S_y[0])])
+    qb_3 = np.zeros([1,len(S_y[0])])
 
 
     for i in range(len(y_booms)):
         if s_booms[i] < d:
             qb = - (S_y / I_zz) * (B_booms[i] * (y_booms[i]))
-            qb_1 = np.append(qb_1, qb + qb_1[-1])
+            parameters['qb'] = qb
+            
+            qb_1 = np.vstack([qb_1, qb + qb_1[-1,:]])
 
         else:
             spar_number1 = i
             break
-
-    qb_spar = qb_1[-1] - (S_y / I_zz) * (B_booms[spar_number1] * (y_booms[spar_number1]))
+    qb_1 = qb_1[1:,:]
+    parameters['qb1']= qb_1
+    
+    qb_spar = qb_1[-1,:] - (S_y / I_zz) * (B_booms[spar_number1] * (y_booms[spar_number1]))
 
     semi = (pi * h_a) / 2
     circ = (pi * h_a)
@@ -87,24 +94,34 @@ def qb_y(parameters, element_locations):
 
     for j in j_1:
         qb = - (S_y / I_zz) * (B_booms[j] * (y_booms[j]))
-        qb_2 = np.append(qb_2, qb + qb_2[-1])
-
+        qb_2 = np.vstack([qb_2, qb + qb_2[-1,:]])
+    
+    qb_2 = qb_2[1:,:]
+    
+    
     k_1 = np.where(np.logical_and(s_booms >= (d + semi), s_booms < circ))[0][1:]
 
     spar_number2 = j_1[-1] + 1
-
-    qb_3 = np.append(qb_3, qb_2[-1] + qb_spar - (S_y / I_zz) * (B_booms[spar_number2] * (y_booms[spar_number2])))
-
+    
+    parameters['qb2'] = qb_2
+    parameters['qbspar'] = qb_spar
+    
+    qb_3 = np.vstack([qb_3, qb_2[-1] + qb_spar - (S_y / I_zz) * (B_booms[spar_number2] * (y_booms[spar_number2]))])
+    
     for k in k_1:
+        
         qb = - S_y / I_zz * B_booms[k] * y_booms[k]
-        qb_3 = np.append(qb_3, qb + qb_3[-1])
+        qb_3 = np.vstack([qb_3, qb + qb_3[-1,:]])
+    parameters['qb3'] = qb_3
+    qb_3 = qb_3[1:,:]
 
 
 #q_0 and angle of twist of airfoil
-
+    
     i_1 = range(len(qb_1))
     i_2 = range(len(qb_1), len(qb_1) + len(qb_2))
     i_3 = range(len(qb_1) + len(qb_2), len(qb_1) + len(qb_2) + len(qb_3))
+    
 
 
 #finding the redundant shear flow in both the two cells
@@ -188,23 +205,26 @@ def qb_y(parameters, element_locations):
 
 
     A = np.array([[a11, a12, a13], [a21, a22, a23], [a31, a32, a33]])
-    y = np.array([y1, y2, y3])
-
+    y = np.vstack([y1, y2, y3])
+    
     q0_LE, q0_TE, RoT = np.dot(np.linalg.inv(A), y)
-
+    
+    
     q1 = qb_1 + q0_TE
     q2 = qb_2 + q0_LE
     q3 = qb_3 + q0_TE
 
     q_spar = qb_spar + q0_TE + q0_LE
-
-    q_skin = np.append(q1,q2,q3)
+    parameters['q1'] = q1
+    parameters['q2'] = q2
+    parameters['q3'] = q3
+    q_skin = np.vstack([np.vstack([q1,q2]),q3])
     
     parameters['qb_spar_y_shear'] = q_spar
     parameters['qb_skin_shear'] = q_skin
     parameters['rot_shear'] = RoT
     
-    return q_skin, q_spar, RoT
+
 
 
 
