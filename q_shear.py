@@ -5,7 +5,7 @@ from math import pi
 
 
 
-def qb_z(parameters, element_locations,h_a,d,n_stiffener):
+def qb_z(parameters, element_locations):
     qb_1 = np.array([0])
     qb_2 = np.array([0])
     qb_spar = 0
@@ -15,6 +15,9 @@ def qb_z(parameters, element_locations,h_a,d,n_stiffener):
     s_booms = element_locations['s_booms']
     S_z = parameters['Shear_z']
     z_cg = parameters['cog_z']
+    h_a = parameters['h']
+    n_stiffener = parameters['n_stiffener']
+    d = parameters['skin_length']
     
     
 
@@ -39,13 +42,13 @@ def qb_z(parameters, element_locations,h_a,d,n_stiffener):
 
 
 
-    parameters['qb_spar_z'] = qb_spar
-    parameters['qb_panel'] = qb_panel
+    parameters['qb_spar_z_shear'] = qb_spar
+    parameters['qb_panel_shear'] = qb_panel
     
 
 
 # shear flow qb in the y' axis
-def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h_a,t_sk,t_sp,G, C_a):
+def qb_y(parameters, element_locations):
     qb_1 = np.array([0])
     qb_2 = np.array([0])
     qb_3 = np.array([0])
@@ -55,6 +58,14 @@ def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h
     B_booms = parameters['Aboomsy'] #check if this should be y or z
     s_booms = element_locations['s_booms']
     S_y = parameters['Shear_y']
+    A_cell1 = parameters['A_cell1']
+    A_cell2 = parameters['A_cell2']
+    h_a = parameters['h']
+    t_sk = parameters['t_skin']
+    t_sp = parameters['t_spar']
+    G = parameters['G']
+    C_a = parameters['c']
+    d = parameters['skin_length']#### wtf is this
 
 
 
@@ -189,9 +200,9 @@ def qb_y(parameters, element_locations, I_zz, y_booms, B_booms, s_booms, S_y,d,h
 
     q_skin = np.append(q1,q2,q3)
     
-    parameters['qb_spar_y'] = q_spar
-    parameters['qb_skin'] = q_skin
-    parameters['rot'] = RoT
+    parameters['qb_spar_y_shear'] = q_spar
+    parameters['qb_skin_shear'] = q_skin
+    parameters['rot_shear'] = RoT
     
     return q_skin, q_spar, RoT
 

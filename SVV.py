@@ -9,8 +9,7 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-def SkinPerimeter(slist,c,h,nst):
-    
+def SkinPerimeter(parameters, slist,c,h,nst):
     zcoord=np.array([])
     ycoord=np.array([])
     
@@ -36,9 +35,9 @@ def SkinPerimeter(slist,c,h,nst):
     return zcoord, ycoord
 
             
-def skin_init( c = 0.505,h = 16.1/100.,nst = 11):            
+def skin_init(parameters, c = 0.505,h = 16.1/100.,nst = 11):            
     global d
-    d = np.sqrt(((h/2)**2 + (c - h/2)**2))
+    d = parameters['skin_length']
     loc = dict()
     
     circumference = np.pi * h / 2 + 2 * d
