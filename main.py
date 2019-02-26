@@ -10,6 +10,7 @@ from Normalstrss import Normalstress
 from plot import plot
 from q_shear import qb_z, qb_y
 from q_torque import qb_T
+from ShearInRib import ribshear_init
 from input_parameters import inputparameters
 
 parameters = dict()
@@ -30,7 +31,7 @@ d_1 = parameters['d_1']
 
 parameters['skin_length'] = 0.43206538856983207
 
-element_locations = skin_init()
+element_locations = skin_init(parameters)
 
 #plt.figure(1)
 #plt.plot(element_locations['z_stiffeners'], element_locations['y_stiffeners'])
@@ -60,7 +61,7 @@ if round(parameters['Aboomsy'][1]/correctans_y, 8)!= 1 or round(parameters['Aboo
 
 
 #actual calculations
-element_locations = skin_init(c,h,n_stiffener)
+element_locations = skin_init(parameters)
 
 parameters['skin_length'] = np.sqrt( (c-h*0.5)**2 + (0.5*h)**2) #length of upper or lower angled part of skin in meters, checked
 parameters['A_cell1'] = np.pi*(h/2)**2/2 #inside de circular part
@@ -88,6 +89,8 @@ qb_y(parameters,element_locations)
 
 qb_T(parameters, element_locations)
 
+
+ribshear_init(parameters)
 
 
 
