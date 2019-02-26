@@ -73,25 +73,24 @@ def qb_y(parameters, element_locations):
 
 
     for i in range(len(y_booms)):
-        if s_booms[i] < d:
+        if s_booms[i] <= d:
             qb = - (S_y / I_zz) * (B_booms[i] * (y_booms[i]))
             parameters['qb'] = qb
             
             qb_1 = np.vstack([qb_1, qb + qb_1[-1,:]])
-
+            
+            parameters['qb_i='+str(i)] = qb_1
         else:
             spar_number1 = i
             break
     qb_1 = qb_1[1:,:]
-    parameters['qb1']= qb_1
     
     qb_spar = qb_1[-1,:] - (S_y / I_zz) * (B_booms[spar_number1] * (y_booms[spar_number1]))
 
     semi = (pi * h_a) / 2
-    circ = (pi * h_a)
 
-    j_1 = np.where(np.logical_and(s_booms > d, s_booms <= semi + d))[0][:-1]
-
+    j_1 = np.where(np.logical_and(s_booms > d, s_booms < semi + d))[0]
+    parameters['j'] = j_1
     for j in j_1:
         qb = - (S_y / I_zz) * (B_booms[j] * (y_booms[j]))
         qb_2 = np.vstack([qb_2, qb + qb_2[-1,:]])
@@ -99,12 +98,10 @@ def qb_y(parameters, element_locations):
     qb_2 = qb_2[1:,:]
     
     
-    k_1 = np.where(np.logical_and(s_booms >= (d + semi), s_booms < circ))[0][1:]
-
+    k_1 = np.where(np.logical_and(s_booms > (d + semi), s_booms < semi+2*d))[0]
+    parameters['k'] = k_1
     spar_number2 = j_1[-1] + 1
     
-    parameters['qb2'] = qb_2
-    parameters['qbspar'] = qb_spar
     
     qb_3 = np.vstack([qb_3, qb_2[-1] + qb_spar - (S_y / I_zz) * (B_booms[spar_number2] * (y_booms[spar_number2]))])
     
@@ -112,7 +109,6 @@ def qb_y(parameters, element_locations):
         
         qb = - S_y / I_zz * B_booms[k] * y_booms[k]
         qb_3 = np.vstack([qb_3, qb + qb_3[-1,:]])
-    parameters['qb3'] = qb_3
     qb_3 = qb_3[1:,:]
 
 
@@ -121,6 +117,11 @@ def qb_y(parameters, element_locations):
     i_1 = range(len(qb_1))
     i_2 = range(len(qb_1), len(qb_1) + len(qb_2))
     i_3 = range(len(qb_1) + len(qb_2), len(qb_1) + len(qb_2) + len(qb_3))
+    
+    
+    parameters['qb1'] = qb_1
+    parameters['qb2'] = qb_2
+    parameters['qb3'] = qb_3
     
 
 
@@ -176,7 +177,9 @@ def qb_y(parameters, element_locations):
              M = M + F*r
 
          else:
-             F = (s_booms[-1] - s_booms[i-1]) * qb_3[i - i_1[-1] -1]
+             parameters['current'] = (s_booms[-1], s_booms[i-1], qb_3,i, i_2[-1])
+             
+             F = (s_booms[-1] - s_booms[i-1]) * qb_3[i - i_2[-1] -1]
              M = M + (F*r)
 
     for i in i_2:
@@ -215,9 +218,7 @@ def qb_y(parameters, element_locations):
     q3 = qb_3 + q0_TE
 
     q_spar = qb_spar + q0_TE + q0_LE
-    parameters['q1'] = q1
-    parameters['q2'] = q2
-    parameters['q3'] = q3
+
     q_skin = np.vstack([np.vstack([q1,q2]),q3])
     
     parameters['qb_spar_y_shear'] = q_spar

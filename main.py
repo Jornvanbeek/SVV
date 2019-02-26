@@ -87,10 +87,10 @@ Normalstress(parameters,element_locations)
 qb_z(parameters,element_locations)
 qb_y(parameters,element_locations)
 
-qb_T(parameters, element_locations)
+#qb_T(parameters, element_locations)
 
 
-ribshear_init(parameters)
+#ribshear_init(parameters)
 
 
 
