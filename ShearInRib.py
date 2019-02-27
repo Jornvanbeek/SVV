@@ -42,12 +42,25 @@ def ribshear_init(parameters):
     global h
     C = parameters['c']
     h = parameters['h']
+    theta = parameters['theta']
+    P = parameters['P']
     #testparameters
     #theta = m.radians(25.)
     #P  = -20600.0 
     
 #    #to be used parameters
-
+    A = np.matrix([[  14208.77576246],
+ [-420761.7777566 ],
+ [      0.        ],
+ [ -78945.72963569],
+ [ 466827.83313073],
+ [  19287.30288047],
+ [-137224.08007986],
+ [ 150869.99065035],
+ [  -3445.18634552],
+ [   1578.26376742],
+ [  38735.31649018],
+ [ -15695.91722425]])
 
     #xpos = [int(78/1000*n),int(233/1000*n),int(309/1000*n),int(385/1000*n),int(927/1000*n)]
     ribflow=[]
