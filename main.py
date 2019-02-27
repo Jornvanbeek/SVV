@@ -87,10 +87,19 @@ Normalstress(parameters,element_locations)
 qb_z(parameters,element_locations)
 qb_y(parameters,element_locations)
 
-#qb_T(parameters, element_locations)
+q_spar_arr = np.zeros(1)
+q_skin_arr = np.zeros(len(element_locations['s_booms']))
+rot_arr = np.zeros(1)
+for T in parameters['Torque']:
+    q_spar_arr, q_skin_arr, rot_arr = qb_T(parameters, element_locations,T,q_spar_arr,q_skin_arr,rot_arr)
+
+parameters['q_spar_tq'] = q_spar_arr[1:]
+parameters['q_skin_tq'] = q_skin_arr[1:]
+parameters['rot_tq'] = rot_arr[1:]
 
 
-#ribshear_init(parameters)
+
+ribshear_init(parameters)
 
 
 
