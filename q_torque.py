@@ -17,7 +17,7 @@ def qb_T(parameters, element_locations, T, q_spar_arr, q_skin_arr, rot_arr):
     A_cellII = parameters['A_cell2']
 #    T = parameters['Torque']
 
-    Equations = np.matrix([[2*A_cellI,2*A_cellII,0],[(np.pi/(2*G*t_skin)+(G*t_spar))*ha/(2*A_cellI),-1*ha/(G*t_spar*2*A_cellI),-1],[-1*ha/(G*t_spar*2*A_cellII),2*parameters['skin_length']/(G*t_skin*2*A_cellII),-1]])
+    Equations = np.matrix([[(np.pi/(2*G*t_skin)+(G*t_spar))*ha/(2*A_cellI),-1*ha/(G*t_spar*2*A_cellI),-1],[-1*ha/(G*t_spar*2*A_cellII),2*parameters['skin_length']/(G*t_skin*2*A_cellII),-1],[2*A_cellI,2*A_cellII,0]])
     ydistance = np.matrix([[0],[0],[T]])
     
     q_LE,q_TE,RoT = np.linalg.solve(Equations,ydistance)
