@@ -6,7 +6,8 @@ Created on Thu Feb 21 16:43:48 2019
 """
 import numpy as np
 import math as m
-#from ForceSolver import Vy, Vz, Tx
+import ForceSolver
+
 def RibShearHinge(Ry,Rz):
     Ry = float(Ry)
     Rz=float(Rz)
@@ -17,8 +18,8 @@ def RibShearHinge(Ry,Rz):
                  [Rz],
                  [-Ry*(C-h/2)]])
     B = rib1.I * res
-    shear1 = (-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
-    shear2 = (shear1*h+Ry)/h
+    shear1 = -B[0] #(-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
+    shear2 = 0#(shear1*h+Ry)/h
     return shear1, shear2
 
 def RibShearActuator(Ry,Rz):
@@ -31,8 +32,8 @@ def RibShearActuator(Ry,Rz):
                  [Rz],
                  [Ry*(C)-Rz*h/2]])
     B= rib1.I * res
-    shear1 = (-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
-    shear2 = (shear1*h+Ry)/h
+    shear1 = -B[0] #(-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
+    shear2 = 0#(shear1*h+Ry)/h
     return shear1,shear2
 
 
@@ -42,25 +43,11 @@ def ribshear_init(parameters):
     C = parameters['c']
     h = parameters['h']
     #testparameters
-    theta = m.radians(25.)
-    P  = -20600.0 
+    #theta = m.radians(25.)
+    #P  = -20600.0 
     
 #    #to be used parameters
-#    P = parameters['P_2']
-#    theta = parameters['theta']
-    
-    A=np.matrix([[ 6.56326488e+04],
-     [-2.99280085e+04],
-     [ 0.00000000e+00],
-     [-9.32054504e+04],
-     [ 2.73538743e+04],
-     [ 3.23659761e+04],
-     [-1.56076390e+03],
-     [ 5.03843396e+04],
-     [-4.55168632e+03],
-     [ 1.70401690e+03],
-     [ 6.39377657e+02],
-     [-7.99398950e+01]])
+
 
     #xpos = [int(78/1000*n),int(233/1000*n),int(309/1000*n),int(385/1000*n),int(927/1000*n)]
     ribflow=[]
