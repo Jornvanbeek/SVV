@@ -19,7 +19,7 @@ xa = 0.245                 #m distance between actuator 1 & 2
 h  = 0.161               #m aileron height
 d1 = 0.00389          #m vertical displacement hinge 1
 d3 = 0.01245         #m vertical displacement hinge 3
-theta=m.radians(30.0)       #deg max upward deflection
+theta=m.radians(0.0)       #deg max upward deflection
 P  = 49200.0               #N load actuator 2
 q  = 3860.0                #N/m aerodynamic load 
 E  = 73.1*10**9             #Pa E-modulus
@@ -129,7 +129,8 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     parameters['zsc'] = zsc
     parameters['P'] = P
     parameters['n'] = n
-    print(A)
+    parameters['A'] = A
+#    print(A)
 
 
 
