@@ -19,6 +19,6 @@ def I_zznon(y_stiff,t_spar,h,c, t_skin,skinlength, A_stiff, parameters):
         
         
         
-    I_zzstiff = I_zzstiff + I_zzLE + I_zzTE + I_zzspar
+    I_zz = I_zzstiff + I_zzLE + I_zzTE + I_zzspar
     
     parameters['Izz_non_ideal'] = I_zzstiff
