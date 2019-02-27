@@ -20,5 +20,5 @@ def inputparameters(parameters):
     
     parameters['G'] = 28. * ( 10. ** 9. )
     parameters['E']  = 73.1*10**9             #Pa E-modulus
-    
+    parameters['n'] = 1000
     

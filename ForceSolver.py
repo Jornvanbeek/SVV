@@ -32,7 +32,7 @@ J = 7.268*10**-6
 
 
 def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3, xa = xa, h = h, d1 = d1, d3 = d3, theta = theta, P = P, q = q, E = E, Izz = Izz, Iyy = Iyy, zsc = zsc,ysc = ysc, G = G, J = J ):
-    
+    n = parameters['n']
     M = np.matrix([[0,0,1,0,0,0,0,0,0,0,0,0],               #Fx
               [1,0,0,1,0,1,0,m.sin(theta),0,0,0,0],     #Fy
               [0,1,0,0,1,0,1,m.cos(theta),0,0,0,0],     #Fz
@@ -132,5 +132,5 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
 
 
 
-parameters = dict()
-force_solver(parameters) 
+#parameters = dict()
+#force_solver(parameters) 
