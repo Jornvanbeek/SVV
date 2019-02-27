@@ -19,7 +19,7 @@ def deflection(parameters):
     q = parameters['q']
     P = parameters['P_2']
     x1 = parameters['x_1']
-    A = parameters['Aboomsy']
+    A = parameters['A']
     x2 = parameters['x_2']
     xa = parameters['x_a']
     x3 = parameters['x_3']
@@ -27,6 +27,8 @@ def deflection(parameters):
     Ca = parameters['c']
     h = parameters['h']
     twist = parameters['twist']
+    Izz = 4.609*10**-6  #m^4 moment of inertia z
+    Iyy = 7.797*10**-5    #m^4 moment of inertia y 
 
 
 
@@ -48,15 +50,18 @@ def deflection(parameters):
              +np.multiply(np.power(x-x3,3),np.heaviside(x-x3,0)*float(A[6])/6)\
              -np.multiply(np.power(x-x2-xa/2,3),np.heaviside(x-x2-xa/2,0)*float(P)*m.cos(theta)/6)\
              +A[10]*x+A[11])
-    dyTE = deltay.T + m.sin(theta)*(Ca-h/2) + np.sin(twist)*(Ca-h/2-zsc)
-    dyLE = deltay.T - m.sin(theta)*h/2- np.sin(twist)*(h/2-zsc)
-    dzTE = deltaz.T + m.cos(theta)*(Ca-h/2) + (np.sin(twist)-np.ones(twist.shape))*(Ca-h/2-zsc)
-    dzLE = deltaz.T - m.cos(theta)*h/2- (np.cos(twist)-np.ones(twist.shape))*(h/2-zsc)
-    return dyTE,dyLE,dzTE,dzLE
-    #plt.figure(4)
-    #plt.plot(x,deltay.T-0.01245)
-    #plt.plot(x,deltaz.T)
-    #plt.show()
+#    print(twist.shape)
+    dyTE = deltay + m.sin(theta)*(Ca-h/2)*np.ones(twist.T.shape) + np.sin(twist.T)*(Ca-h/2-zsc)
+    dyLE = deltay - m.sin(theta)*h/2*np.ones(twist.T.shape)- np.sin(twist.T)*(h/2-zsc)
+    dzTE = deltaz + m.cos(theta)*(Ca-h/2)*np.ones(twist.T.shape) + (np.sin(twist.T)-np.ones(twist.T.shape))*(Ca-h/2-zsc)
+    dzLE = deltaz - m.cos(theta)*h/2*np.ones(twist.T.shape)- (np.cos(twist.T)-np.ones(twist.T.shape))*(h/2-zsc)
+    
+#    plt.figure(4)
+#    plt.plot(x,twist)
+#    plt.plot(x,deltaz.T)
+#    plt.show()
+    return dyTE,dyLE,dzTE,dzLE,x
+    
     
     
     #plt.figure(1)
