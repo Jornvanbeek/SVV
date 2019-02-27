@@ -12,6 +12,7 @@ from q_shear import qb_z, qb_y
 from q_torque import qb_T
 from ShearInRib import ribshear_init
 from input_parameters import inputparameters
+from Deflection import deflection
 
 parameters = dict()
 inputparameters(parameters)
@@ -101,7 +102,7 @@ parameters['rot_tq'] = rot_arr[1:]
 
 ribshear_init(parameters)
 
-
+dyTE,dyLE,dzTE,dzLE = deflection(parameters)
 
 
 
