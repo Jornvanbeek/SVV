@@ -112,12 +112,12 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
          # (d3*m.sin(theta)+zsc)*Aprime[0])*np.heaviside(x-x3,0)
         if i >=1:
             twist[i] = twist[i-1] - Tx[i-1]/G/J * l * 1 / len(Vz)
-#            twist[i] = twist[i] - twist[int(233/1000*n)]
+#            
         My[i] = My[i-1]  - Vz[i-1] * l * 1 / len(Vz)
         Mz[i] = Mz[i-1]  - Vy[i-1] * l * 1 / len(Vz)
         xlist.append(x)
-            
-   
+    for i in range(len(twist)):        
+        twist[i] = twist[i] - twist[int(233/1000*n)]
     parameters['Equations?'] = M
     parameters['Reaction_forces?'] = R
     parameters['Shear_z'] =Vz
@@ -132,12 +132,12 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     parameters['n'] = n
     parameters['A'] = A
     
-    plt.figure(1)
-    plt.plot(xlist,My)
-    plt.show()
-    plt.figure(2)
-    plt.plot(xlist,Mz)
-    plt.show()
+#    plt.figure(1)
+#    plt.plot(xlist,My)
+#    plt.show()
+#    plt.figure(2)
+#    plt.plot(xlist,Mz)
+#    plt.show()
 #    print(A)
 
 
