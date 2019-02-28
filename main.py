@@ -103,14 +103,14 @@ parameters['rot_tq'] = rot_arr[1:]
 ribshear_init(parameters)
 
 dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
-plt.figure(1)
-plt.plot(x,dyLE.T)
-plt.plot(x,dyTE.T)
-plt.show()
-plt.figure(2)
-plt.plot(x,dzLE.T)
-plt.plot(x,dzTE.T)
-plt.show()
+#plt.figure(1)
+#plt.plot(x,dyLE.T)
+#plt.plot(x,dyTE.T)
+#plt.show()
+#plt.figure(2)
+#plt.plot(x,dzLE.T)
+#plt.plot(x,dzTE.T)
+#plt.show()
 
 
 
