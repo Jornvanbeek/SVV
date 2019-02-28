@@ -14,13 +14,13 @@ def Normalstress(parameters,element_locations):
     #Calculates normal stress due to bending around zprime axis
     for i in range(len(parameters['Moment_z'])):
         for j in range(len(element_locations['z_booms'])):
-            sigmazx = (parameters['Moment_z'][i]*(ycentroid-element_locations['y_booms'][j]))/Izzprimeid
+            sigmazx = (parameters['Moment_z'][i]*(-element_locations['y_booms'][j]-ycentroid))/Izzprimeid
             totalstressz[j,i] = sigmazx
             
     #Calculates normal stress due to bending around yprime axis
     for i in range(len(parameters['Moment_y'])):
         for j in range(len(element_locations['z_booms'])):
-            sigmayx = (parameters['Moment_y'][i]*(zcentroid-element_locations['z_booms'][j]))/Iyyprimeid
+            sigmayx = (parameters['Moment_y'][i]*(element_locations['z_booms'][j]-zcentroid))/Iyyprimeid
             totalstressy[j,i] = sigmayx
     
     parameters['normalstress'] = totalstressy + totalstressz
