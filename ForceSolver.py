@@ -25,7 +25,7 @@ q  = 3860.0                #N/m aerodynamic load
 E  = 73.1*10**9             #Pa E-modulus
 Izz = 4.609*10**-6  #m^4 moment of inertia z
 Iyy = 7.797*10**-5    #m^4 moment of inertia y 
-zsc = -0.027
+zsc = -0.0229
 ysc = 0.0
 G = 28. * ( 10. ** 9. )
 J = 7.268*10**-6 
@@ -100,16 +100,13 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
         + q * x * m.sin(theta)
     
     
-        Tx[i] = (-q*x*m.cos(theta)*(zsc+0.25*Ca-h/2)\
+        Tx[i] = -q*x*m.cos(theta)*(zsc+0.25*Ca-h/2)\
         +(Aprime[7]*m.cos(theta)*h/2-Aprime[7]*m.sin(theta)*(h/2-zsc))*np.heaviside(x-x2+xa/2,0)\
-        -(P*m.cos(theta)*h/2-P*m.sin(theta)*(h/2-zsc))*np.heaviside(x-x2-xa/2,0))\
-        #+((d1*m.cos(theta))*Aprime[1]+\
-         # (d1*m.sin(theta)+zsc)*Aprime[0])*np.heaviside(x-x1,0)\
-         
-        #+(Aprime[3]*zsc)*np.heaviside(x-x2,0)\
+        -(P*m.cos(theta)*h/2-P*m.sin(theta)*(h/2-zsc))*np.heaviside(x-x2-xa/2,0)\
+        +((d1*m.cos(theta))*Aprime[1]+(d1*m.sin(theta)+zsc)*Aprime[0])*np.heaviside(x-x1,0)\
+        +(Aprime[3]*zsc)*np.heaviside(x-x2,0)\
+        +((d3*m.cos(theta))*Aprime[6]+(d3*m.sin(theta)+zsc)*Aprime[5])*np.heaviside(x-x3,0)\
         
-        #+((d3*m.cos(theta))*Aprime[1]+\
-         # (d3*m.sin(theta)+zsc)*Aprime[0])*np.heaviside(x-x3,0)
         if i >=1:
             twist[i] = twist[i-1] - Tx[i-1]/G/J * l * 1 / len(Vz)
 #            
