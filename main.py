@@ -102,7 +102,7 @@ parameters['q_spar_tq'] = q_spar_arr[1:]
 parameters['q_skin_tq'] = q_skin_arr[1:]
 parameters['rot_tq'] = rot_arr[1:]
 
-parameters['shear_booms'] = (np.transpose(parameters['q_skin_tq']) +parameters['qb_skin_shear'])/parameters['t_skin']
+parameters['shear_booms'] = (np.transpose(parameters['q_skin_tq']) +parameters['qb_skin_shear'])/(parameters['t_skin']*10**6)
 
 parameters['vonmises'] = np.sqrt((parameters['normalstress'])**2 + 3*(parameters['shear_booms'])**2)
 vonmises =parameters['vonmises']# np.sqrt(parameters['normalstress']**2)

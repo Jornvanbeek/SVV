@@ -37,7 +37,12 @@ df_array2[:,-1] = (df_array2[:,-3]+df_array2[:,-2])/2
 #for data in df_array:
 #    values[int(data[1])] = data[-1]
 
+head = 16
+skiprows=list(range(0,head))+[head+1,head+2]
+footer = 43
+df_dis = pd.read_fwf("../../F100/F100_ULC1.rpt",sep = '  ', skiprows = skiprows ,skipfooter = footer,skip_blank_lines=True, keep_default_na = False)
 
+dfdis_arr = np.array(df_dis, dtype = float)[:,[0,5,6,7,8]]
 
 
 
@@ -70,20 +75,42 @@ xs = np.array([])
 ys = np.array([])
 zs = np.array([])
 val = np.array([])
+disp = np.array([])
 base2 = []
+xdisp =np.array([])
+ydisp =np.array([])
+zdisp =np.array([])
+for i in range(len(base)):
+    base[i].append(dfdis_arr[i,1])
+    base[i].append(dfdis_arr[i,2])
+    base[i].append(dfdis_arr[i,3])
+    base[i].append(dfdis_arr[i,4])
+    
 for v in df_array:
-    if len(base[int(v[1])-1]) <5:
+    if len(base[int(v[1])-1]) <9:
         base[int(v[1])-1].append(v[-1])
 for i in range(len(base)):
-    if len(base[i]) ==5:
+    if len(base[i]) ==9:
      
         base2.append(base[i])
-        
+
+multiplication_factor = 100
 for node in base2:
     xs = np.append(xs,node[1])
     ys = np.append(ys,node[2])
     zs = np.append(zs,node[3])
     val = np.append(val,node[4])
+    disp = np.append(disp,node[5])
+    xdisp = np.append(xdisp,node[6])
+    ydisp = np.append(ydisp,node[7])
+    zdisp = np.append(zdisp,node[8])
+    
+
+
+xdisp = xs+xdisp*multiplication_factor
+ydisp = ys+ydisp*multiplication_factor
+zdisp = zs+zdisp*multiplication_factor
+
 
 def scatter3d(x,y,z, cs, colorsMap='jet'):
     cm = plt.get_cmap(colorsMap)
@@ -101,8 +128,14 @@ def scatter3d(x,y,z, cs, colorsMap='jet'):
 ##ax.set_xlim(min(zs)-max(zs)*.5, max(zs)*1.5)
 ##ax.set_ylim(min(xs)-max(xs)*.5, max(xs)*1.5)
 ##ax.set_zlim(min(ys)-max(ys)*.5, max(ys)*1.5)
-#scatter3d(zs,xs,ys, val)
+scatter3d(zs,xs,ys, val)
+scatter3d(zs,xs,ys,disp)
+scatter3d(zs,xs,ydisp,disp)
 
 #fig = plt.figure()
 #ax = fig.add_subplot(111, projection='3d')
 #ax.plot_surface(zs,xs,np.vstack([ys,np.ones(len(ys))]))
+
+
+
+
