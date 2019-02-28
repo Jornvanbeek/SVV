@@ -113,8 +113,8 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
         My[i] = My[i-1]  + Vz[i-1] * l * 1 / len(Vz)
         Mz[i] = Mz[i-1]  + Vy[i-1] * l * 1 / len(Vz)
         xlist.append(x)
-    for i in range(len(twist)):        
-        twist[i] = twist[i] - twist[int(233/1000*n)]
+    f= twist[int(len(My)*0.375/l)]
+    twist = twist - f
     parameters['Equations?'] = M
     parameters['Reaction_forces?'] = R
     parameters['Shear_z'] =Vz
