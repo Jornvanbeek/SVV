@@ -10,7 +10,7 @@ import matplotlib.cm as cmx
 head = 20
 skiprows=list(range(0,head))+[head+1,head+2]
 footer = 13
-df = pd.read_fwf("F100/F100_SLC1.rpt",sep = '  ', skiprows = skiprows ,skipfooter = footer,skip_blank_lines=True, keep_default_na = False)
+df = pd.read_fwf("../../F100/F100_SLC1.rpt",sep = '  ', skiprows = skiprows ,skipfooter = footer,skip_blank_lines=True, keep_default_na = False)
 
 
 
@@ -50,7 +50,7 @@ eset = []
 
 comments = 0
 i = 0
-with open('F100/F100n.inp') as file:
+with open('../../F100/F100-19.inp') as file:
     for line in file:
         if line[0] == '*':
             comments +=1
@@ -85,17 +85,17 @@ for node in base2:
     zs = np.append(zs,node[3])
     val = np.append(val,node[4])
 
-#def scatter3d(x,y,z, cs, colorsMap='jet'):
-#    cm = plt.get_cmap(colorsMap)
-#    cNorm = matplotlib.colors.Normalize(vmin=min(cs), vmax=max(cs))
-#    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
-#    fig = plt.figure()
-#    ax = Axes3D(fig)
-#    ax.scatter(x, y, z, c=scalarMap.to_rgba(cs))
-#    scalarMap.set_array(cs)
-#    fig.colorbar(scalarMap)
-#    plt.show()
-#    
+def scatter3d(x,y,z, cs, colorsMap='jet'):
+    cm = plt.get_cmap(colorsMap)
+    cNorm = matplotlib.colors.Normalize(vmin=min(cs), vmax=max(cs))
+    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    ax.scatter(x, y, z, c=scalarMap.to_rgba(cs))
+    scalarMap.set_array(cs)
+    fig.colorbar(scalarMap)
+    plt.show()
+    
 ##    
 #
 ##ax.set_xlim(min(zs)-max(zs)*.5, max(zs)*1.5)
@@ -103,6 +103,6 @@ for node in base2:
 ##ax.set_zlim(min(ys)-max(ys)*.5, max(ys)*1.5)
 #scatter3d(zs,xs,ys, val)
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(zs,xs,np.vstack([ys,np.ones(len(ys))]))
+#fig = plt.figure()
+#ax = fig.add_subplot(111, projection='3d')
+#ax.plot_surface(zs,xs,np.vstack([ys,np.ones(len(ys))]))

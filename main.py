@@ -13,6 +13,7 @@ from q_torque import qb_T
 from ShearInRib import ribshear_init
 from input_parameters import inputparameters
 from Deflection import deflection
+from rpt_reader import scatter3d
 
 parameters = dict()
 inputparameters(parameters)
@@ -94,26 +95,45 @@ rot_arr = np.zeros(1)
 for T in parameters['Torque']:
     q_spar_arr, q_skin_arr, rot_arr = qb_T(parameters, element_locations,T,q_spar_arr,q_skin_arr,rot_arr)
 
+ribshear_init(parameters)
+
+
 parameters['q_spar_tq'] = q_spar_arr[1:]
 parameters['q_skin_tq'] = q_skin_arr[1:]
 parameters['rot_tq'] = rot_arr[1:]
 
+parameters['shear_booms'] = np.transpose(parameters['q_skin_tq']) +parameters['qb_skin_shear']
+
+parameters['vonmises'] = np.sqrt((parameters['normalstress'])**2 + 3*(parameters['shear_booms'])**2)
+val = np.array([])
+zs = np.array([])
+ys = np.array([])
+xs = np.array([])
+for i in range(len(parameters['vonmises'])):
+    val = np.hstack([val,parameters['vonmises'][i]])
+    zs = np.hstack([zs,np.ones(len(parameters['vonmises'][i])) * element_locations['z_booms'][i]])
+    xs = np.hstack([xs, np.linspace(0,parameters['l'],parameters['n'])])
+    ys = np.hstack([ys, np.ones(len(parameters['vonmises'][i])) * element_locations['y_booms'][i]])
+# 
+#
+scatter3d(zs,xs,ys, val)
 
 
-ribshear_init(parameters)
-
-dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
-plt.figure(1)
-plt.plot(x,dyLE.T)
-plt.grid()
-plt.plot(x,dyTE.T)
-plt.show()
-plt.figure(2)
-plt.plot(x,dzLE.T)
-plt.plot(x,dzTE.T)
-plt.show()
 
 
+
+#dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
+#plt.figure(1)
+#plt.plot(x,dyLE.T)
+#plt.grid()
+#plt.plot(x,dyTE.T)
+#plt.show()
+#plt.figure(2)
+#plt.plot(x,dzLE.T)
+#plt.plot(x,dzTE.T)
+#plt.show()
+#
+#
 
 
 
