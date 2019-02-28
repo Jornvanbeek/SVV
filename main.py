@@ -102,24 +102,31 @@ parameters['q_spar_tq'] = q_spar_arr[1:]
 parameters['q_skin_tq'] = q_skin_arr[1:]
 parameters['rot_tq'] = rot_arr[1:]
 
-parameters['shear_booms'] = np.transpose(parameters['q_skin_tq']) +parameters['qb_skin_shear']
+parameters['shear_booms'] = (np.transpose(parameters['q_skin_tq']) +parameters['qb_skin_shear'])/parameters['t_skin']
 
 parameters['vonmises'] = np.sqrt((parameters['normalstress'])**2 + 3*(parameters['shear_booms'])**2)
-val = np.array([])
-zs = np.array([])
-ys = np.array([])
-xs = np.array([])
-for i in range(len(parameters['vonmises'])):
-    val = np.hstack([val,parameters['vonmises'][i]])
-    zs = np.hstack([zs,np.ones(len(parameters['vonmises'][i])) * element_locations['z_booms'][i]])
-    xs = np.hstack([xs, np.linspace(0,parameters['l'],parameters['n'])])
-    ys = np.hstack([ys, np.ones(len(parameters['vonmises'][i])) * element_locations['y_booms'][i]])
-# 
-#
-scatter3d(zs,xs,ys, val)
+vonmises =parameters['vonmises']# np.sqrt(parameters['normalstress']**2)
 
 
+def plotinit(values):
+    values = np.abs(values)
+    val = np.array([])
+    zs = np.array([])
+    ys = np.array([])
+    xs = np.array([])
+    for i in range(len(values)):
+        val = np.hstack([val,values[i]])
+        zs = np.hstack([zs,np.ones(len(values[i])) * element_locations['z_booms'][i]])
+        xs = np.hstack([xs, np.linspace(0,parameters['l'],parameters['n'])])
+        ys = np.hstack([ys, np.ones(len(values[i])) * element_locations['y_booms'][i]])
+    # 
+    #
+    scatter3d(zs,xs,ys, val)
 
+
+plotinit(vonmises)
+plotinit(parameters['normalstress'])
+plotinit(parameters['shear_booms'])
 
 
 #dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
