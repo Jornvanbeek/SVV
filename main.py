@@ -123,17 +123,21 @@ scatter3d(zs,xs,ys, val)
 
 
 #dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
+#theta = math.radians(parameters['theta'])
+#dygLE = dylLE*math.cos(theta) - dzlLE*math.sin(theta)
+#dygTE = dylTE*math.cos(theta) - dzlTE*math.sin(theta)
+#dzgLE = dzlLE*math.cos(theta) + dylLE*math.sin(theta)
+#dzgTE = dzlTE*math.cos(theta) + dylTE*math.sin(theta)
+#
 #plt.figure(1)
-#plt.plot(x,dyLE.T)
+#plt.plot(x,dygLE.T)
 #plt.grid()
-#plt.plot(x,dyTE.T)
+#plt.plot(x,dygTE.T)
 #plt.show()
 #plt.figure(2)
-#plt.plot(x,dzLE.T)
-#plt.plot(x,dzTE.T)
+#plt.plot(x,dzgLE.T)
+#plt.plot(x,dzgTE.T)
 #plt.show()
-#
-#
 
 
 
