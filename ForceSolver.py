@@ -132,11 +132,11 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     parameters['n'] = n
     parameters['A'] = A
     
-    plt.figure(1)
-    plt.plot(xlist,My)
-    plt.show()
-    plt.figure(2)
-    plt.plot(xlist,Mz)
+#    plt.figure(1)
+#    plt.plot(xlist,My)
+#    plt.show()
+#    plt.figure(2)
+#    plt.plot(xlist,Mz)
     plt.show()
 #    print(A)
 

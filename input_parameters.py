@@ -14,7 +14,7 @@ def inputparameters(parameters):
     parameters['n_stiffener'] = 11            #number of stiffeners
     parameters['d_1'] = 0.389/100.            #cm, displacement hinge 1
     parameters['d_3'] = 1.245/100.            #cm, displacement hinge 3
-    parameters['theta'] = 0.                 #degrees, max upward deflection
+    parameters['theta'] = 30.                 #degrees, max upward deflection
     parameters['P_2'] = 49.2*1000             #kN, load actuator 2
     parameters['q'] = 3.86*1000               #kN/m, aerodynamic load
     

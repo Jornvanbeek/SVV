@@ -7,7 +7,7 @@ Created on Wed Feb 27 14:05:36 2019
 import math as m
 import numpy as np
 import matplotlib.pyplot as plt
-import ForceSolver
+#import ForceSolver
 def deflection(parameters):
     l = parameters['l']
     n = parameters['n']
@@ -29,7 +29,7 @@ def deflection(parameters):
     twist = parameters['twist']
     Izz = 4.609*10**-6  #m^4 moment of inertia z
     Iyy = 7.797*10**-5    #m^4 moment of inertia y 
-
+    theta = m.radians(theta)
 
 
 
@@ -58,7 +58,7 @@ def deflection(parameters):
     
 #    plt.figure(4)
 #    plt.plot(x,twist)
-#    plt.plot(x,deltaz.T)
+#    plt.plot(x,deltay.T)
 #    plt.show()
     return dyTE,dyLE,dzTE,dzLE,x
     
