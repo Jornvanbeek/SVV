@@ -19,7 +19,7 @@ xa = 0.245                 #m distance between actuator 1 & 2
 h  = 0.161               #m aileron height
 d1 = 0.00389          #m vertical displacement hinge 1
 d3 = 0.01245         #m vertical displacement hinge 3
-theta=m.radians(0.0)       #deg max upward deflection
+theta=m.radians(30.0)       #deg max upward deflection
 P  = 49200.0               #N load actuator 2
 q  = 3860.0                #N/m aerodynamic load 
 E  = 73.1*10**9             #Pa E-modulus
@@ -33,6 +33,7 @@ J = 7.268*10**-6
 
 def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3, xa = xa, h = h, d1 = d1, d3 = d3, theta = theta, P = P, q = q, E = E, Izz = Izz, Iyy = Iyy, zsc = zsc,ysc = ysc, G = G, J = J ):
     n = parameters['n']
+#    n=1000
     M = np.matrix([[0,0,1,0,0,0,0,0,0,0,0,0],               #Fx
               [1,0,0,1,0,1,0,m.sin(theta),0,0,0,0],     #Fy
               [0,1,0,0,1,0,1,m.cos(theta),0,0,0,0],     #Fz
@@ -111,10 +112,10 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
          # (d3*m.sin(theta)+zsc)*Aprime[0])*np.heaviside(x-x3,0)
         if i >=1:
             twist[i] = twist[i-1] - Tx[i-1]/G/J * l * 1 / len(Vz)
-            twist[i] = twist[i] - twist[int(233/1000*n)]
-        My[i] = My[i-1]  + Vz[i-1] * l * 1 / len(Vz)
-        Mz[i] = Mz[i-1]  + Vy[i-1] * l * 1 / len(Vz)
-    xlist.append(x)
+#            twist[i] = twist[i] - twist[int(233/1000*n)]
+        My[i] = My[i-1]  - Vz[i-1] * l * 1 / len(Vz)
+        Mz[i] = Mz[i-1]  - Vy[i-1] * l * 1 / len(Vz)
+        xlist.append(x)
             
    
     parameters['Equations?'] = M
@@ -130,6 +131,13 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     parameters['P'] = P
     parameters['n'] = n
     parameters['A'] = A
+    
+    plt.figure(1)
+    plt.plot(xlist,My)
+    plt.show()
+    plt.figure(2)
+    plt.plot(xlist,Mz)
+    plt.show()
 #    print(A)
 
 
