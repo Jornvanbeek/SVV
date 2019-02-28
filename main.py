@@ -129,22 +129,30 @@ plotinit(parameters['normalstress'])
 plotinit(parameters['shear_booms'])
 
 
-#dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
-#theta = math.radians(parameters['theta'])
+dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
+theta = math.radians(parameters['theta'])
+twist = parameters['twist']
 #dygLE = dylLE*math.cos(theta) - dzlLE*math.sin(theta)
 #dygTE = dylTE*math.cos(theta) - dzlTE*math.sin(theta)
 #dzgLE = dzlLE*math.cos(theta) + dylLE*math.sin(theta)
 #dzgTE = dzlTE*math.cos(theta) + dylTE*math.sin(theta)
 #
 #plt.figure(1)
-#plt.plot(x,dygLE.T)
+#plt.plot(x,dyLE.T)
+#plt.plot(x,math.sin(theta)*(c-h/2)*np.ones(twist.shape))
+#plt.plot(x,- math.sin(theta)*h/2*np.ones(twist.shape))
 #plt.grid()
-#plt.plot(x,dygTE.T)
+#plt.plot(x,dyTE.T)
 #plt.show()
+#
 #plt.figure(2)
-#plt.plot(x,dzgLE.T)
-#plt.plot(x,dzgTE.T)
+#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
+#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
+#plt.grid()
+#plt.plot(x,dzLE.T)
+#plt.plot(x,dzTE.T)
 #plt.show()
+
 
 
 
