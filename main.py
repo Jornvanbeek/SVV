@@ -132,11 +132,12 @@ plotinit(parameters['shear_booms'])
 dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
 theta = math.radians(parameters['theta'])
 twist = parameters['twist']
-#dygLE = dylLE*math.cos(theta) - dzlLE*math.sin(theta)
-#dygTE = dylTE*math.cos(theta) - dzlTE*math.sin(theta)
-#dzgLE = dzlLE*math.cos(theta) + dylLE*math.sin(theta)
-#dzgTE = dzlTE*math.cos(theta) + dylTE*math.sin(theta)
-#
+dygLE = dyLE*math.cos(theta) - dzLE*math.sin(theta) - m.sin(theta)*h/2*np.ones(twist.T.shape)
+dygTE = dyTE*math.cos(theta) - dzTE*math.sin(theta) + m.sin(theta)*(Ca-h/2)*np.ones(twist.T.shape) 
+dzgLE = dzLE*math.cos(theta) + dyLE*math.sin(theta)+ m.cos(theta)*h/2*np.ones(twist.T.shape)
+dzgTE = dzTE*math.cos(theta) + dyTE*math.sin(theta)- m.cos(theta)*(Ca-h/2)*np.ones(twist.T.shape) 
+
+
 #plt.figure(1)
 #plt.plot(x,dyLE.T)
 #plt.plot(x,math.sin(theta)*(c-h/2)*np.ones(twist.shape))
@@ -144,14 +145,22 @@ twist = parameters['twist']
 #plt.grid()
 #plt.plot(x,dyTE.T)
 #plt.show()
-#
-#plt.figure(2)
+
+plt.figure(2)
 #plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
 #plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
-#plt.grid()
-#plt.plot(x,dzLE.T)
-#plt.plot(x,dzTE.T)
-#plt.show()
+plt.grid()
+plt.plot(x,dzgLE.T)
+#plt.plot(x,0.069825*np.ones(x.shape))
+#plt.plot(x,dzgTE.T)
+plt.show()
+plt.figure(3)
+#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
+#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
+plt.grid()
+#plt.plot(x,dygLE.T)
+plt.plot(x,dygTE.T)
+plt.show()
 
 
 
