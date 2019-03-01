@@ -1,3 +1,4 @@
+import numpy as np
 def inputparameters(parameters):
     parameters['c'] = 0.505                   #m, chord lenght
     parameters['l'] = 1.611                   #m, span
@@ -21,4 +22,7 @@ def inputparameters(parameters):
     parameters['G'] = 28. * ( 10. ** 9. )
     parameters['E']  = 73.1*10**9             #Pa E-modulus
     parameters['n'] = 1000
-    
+    parameters['skin_length'] = np.sqrt( (parameters['c']-parameters['h']*0.5)**2 + (0.5*parameters['h'])**2) #length of upper or lower angled part of skin in meters, checked
+    parameters['A_cell1'] = np.pi*(parameters['h']/2)**2/2 #inside de circular part
+    parameters['A_cell2'] = parameters['h']*(parameters['c']-parameters['h']/2)/2 #inside the triangular part
+

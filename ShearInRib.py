@@ -18,8 +18,8 @@ def RibShearHinge(Ry,Rz):
                  [Rz],
                  [-Ry*(C-h/2)]])
     B = rib1.I * res
-    shear1 = -B[0] #(-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
-    shear2 = 0#(shear1*h+Ry)/h
+    shear1 = -B[0] 
+    shear2 = 0
     return shear1, shear2
 
 def RibShearActuator(Ry,Rz):
@@ -32,8 +32,8 @@ def RibShearActuator(Ry,Rz):
                  [Rz],
                  [Ry*(C)-Rz*h/2]])
     B= rib1.I * res
-    shear1 = -B[0] #(-B[0]*h-2*(m.pi*h**2/4/2)*-B[0]*h/2/(C-h/2)) / h
-    shear2 = 0#(shear1*h+Ry)/h
+    shear1 = -B[0] 
+    shear2 = 0
     return shear1,shear2
 
 
@@ -45,14 +45,10 @@ def ribshear_init(parameters):
     theta = parameters['theta']
     theta = m.radians(theta)
     P = parameters['P']
-    #testparameters
-    #theta = m.radians(25.)
-    #P  = -20600.0 
-    
-#    #to be used parameters
+
+
     A = parameters['A']
 
-    #xpos = [int(78/1000*n),int(233/1000*n),int(309/1000*n),int(385/1000*n),int(927/1000*n)]
     ribflow=[]
     #hinge 1
     Ry=A[0]
@@ -84,4 +80,4 @@ def ribshear_init(parameters):
     ribflow.append(Rib)
     parameters['ribflow'] = ribflow
     
-#    print(ribflow)
+

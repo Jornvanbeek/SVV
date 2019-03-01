@@ -23,17 +23,19 @@ theta=m.radians(30.0)       #deg max upward deflection
 P  = 49200.0               #N load actuator 2
 q  = 3860.0                #N/m aerodynamic load 
 E  = 73.1*10**9             #Pa E-modulus
-Izz = 4.609*10**-6  #m^4 moment of inertia z
-Iyy = 7.797*10**-5    #m^4 moment of inertia y 
+ 
+
 zsc = -0.0229
 ysc = 0.0
 G = 28. * ( 10. ** 9. )
 J = 7.268*10**-6 
 
 
-def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3, xa = xa, h = h, d1 = d1, d3 = d3, theta = theta, P = P, q = q, E = E, Izz = Izz, Iyy = Iyy, zsc = zsc,ysc = ysc, G = G, J = J ):
+def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3, xa = xa, h = h, d1 = d1, d3 = d3, theta = theta, P = P, q = q, E = E, zsc = zsc,ysc = ysc, G = G, J = J ):
     n = parameters['n']
-#    n=1000
+    Izz = parameters['Izz']
+    Iyy = parameters['Iyy']
+
     M = np.matrix([[0,0,1,0,0,0,0,0,0,0,0,0],               #Fx
               [1,0,0,1,0,1,0,m.sin(theta),0,0,0,0],     #Fy
               [0,1,0,0,1,0,1,m.cos(theta),0,0,0,0],     #Fz
@@ -72,8 +74,6 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     
     Aprime =   A
     
-    
-    #while abs(Tx[-1])>0.1:
     Vz = np.zeros((n,1))
     Vy = np.zeros((n,1))
     My = np.zeros((n,1))
@@ -115,6 +115,7 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
         xlist.append(x)
     f= twist[int(len(My)*0.375/l)]
     twist = twist - f
+    
     parameters['Equations?'] = M
     parameters['Reaction_forces?'] = R
     parameters['Shear_z'] =Vz
@@ -129,15 +130,3 @@ def force_solver(parameters, n = 1000, Ca = Ca, l = l, x1 = x1, x2 = x2, x3 = x3
     parameters['n'] = n
     parameters['A'] = A
     
-#    plt.figure(1)
-#    plt.plot(xlist,My)
-#    plt.show()
-#    plt.figure(2)
-#    plt.plot(xlist,Mz)
-    plt.show()
-#    print(A)
-
-
-
-#parameters = dict()
-#force_solver(parameters) 

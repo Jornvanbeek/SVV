@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Feb 22 13:35:04 2019
-
-@author: Arthur
-"""
 import numpy as np
 
 def qb_T(parameters, element_locations, T, q_spar_arr, q_skin_arr, rot_arr):
@@ -15,7 +9,6 @@ def qb_T(parameters, element_locations, T, q_spar_arr, q_skin_arr, rot_arr):
     d = parameters['skin_length']
     A_cellI = parameters['A_cell1']
     A_cellII = parameters['A_cell2']
-#    T = parameters['Torque']
 
     Equations = np.matrix([[(np.pi/(2*G*t_skin)+(G*t_spar))*ha/(2*A_cellI),-1*ha/(G*t_spar*2*A_cellI),-1],[-1*ha/(G*t_spar*2*A_cellII),2*parameters['skin_length']/(G*t_skin*2*A_cellII),-1],[2*A_cellI,2*A_cellII,0]])
     ydistance = np.matrix([[0],[0],[T]])
@@ -43,4 +36,4 @@ def qb_T(parameters, element_locations, T, q_spar_arr, q_skin_arr, rot_arr):
     rot_arr = np.vstack([rot_arr,RoT])
     return q_spar_arr, q_skin_arr, rot_arr
     
-    #I might change the i,j,k things into our slist, so wait to implement
+

@@ -75,11 +75,10 @@ def qb_y(parameters, element_locations):
     for i in range(len(y_booms)):
         if s_booms[i] <= d:
             qb = - (S_y / I_zz) * (B_booms[i] * (y_booms[i]))
-#            parameters['qb'] = qb
             
             qb_1 = np.vstack([qb_1, qb + qb_1[-1,:]])
             
-#            parameters['qb_i='+str(i)] = qb_1
+
         else:
             spar_number1 = i
             break
@@ -119,11 +118,6 @@ def qb_y(parameters, element_locations):
     i_3 = range(len(qb_1) + len(qb_2), len(qb_1) + len(qb_2) + len(qb_3))
     
     
-#    parameters['qb1'] = qb_1
-#    parameters['qb2'] = qb_2
-#    parameters['qb3'] = qb_3
-    
-
 
 #finding the redundant shear flow in both the two cells
 
@@ -177,7 +171,6 @@ def qb_y(parameters, element_locations):
              M = M + F*r
 
          else:
-#             parameters['current'] = (s_booms[-1], s_booms[i-1], qb_3,i, i_2[-1])
              
              F = (s_booms[-1] - s_booms[i-1]) * qb_3[i - i_2[-1] -1]
              M = M + (F*r)
