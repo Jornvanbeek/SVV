@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
+import math
 from definitionboomarea import Boomarea
 from SVV import skin_init
 from cog import center_gravity, I_yy, I_zz, I_zznon, ideal_cog
@@ -13,7 +14,7 @@ from q_torque import qb_T
 from ShearInRib import ribshear_init
 from input_parameters import inputparameters
 from Deflection import deflection
-from rpt_reader import scatter3d
+from rpt_reader import scatter3d, plotdeflections
 
 parameters = dict()
 inputparameters(parameters)
@@ -123,35 +124,55 @@ def plotinit(values):
     #
     scatter3d(zs,xs,ys, val)
 
-
-plotinit(vonmises)
-plotinit(parameters['normalstress'])
-plotinit(parameters['shear_booms'])
+#
+#plotinit(vonmises)
+#plotinit(parameters['normalstress'])
+#plotinit(parameters['shear_booms'])
 
 
 dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
 theta = math.radians(parameters['theta'])
 twist = parameters['twist']
-#dygLE = dylLE*math.cos(theta) - dzlLE*math.sin(theta)
-#dygTE = dylTE*math.cos(theta) - dzlTE*math.sin(theta)
-#dzgLE = dzlLE*math.cos(theta) + dylLE*math.sin(theta)
-#dzgTE = dzlTE*math.cos(theta) + dylTE*math.sin(theta)
-#
-#plt.figure(1)
-#plt.plot(x,dyLE.T)
+
+
+dygLE = dyLE*math.cos(theta) - dzLE*math.sin(theta)
+dygTE = dyTE*math.cos(theta) - dzTE*math.sin(theta)
+dzgLE = dzLE*math.cos(theta) + dyLE*math.sin(theta)
+dzgTE = dzTE*math.cos(theta) + dyTE*math.sin(theta)
+
+plt.figure(1)
+plt.title('y deflection of leading edge, numerical')
+plt.plot(x,dygLE.T)
 #plt.plot(x,math.sin(theta)*(c-h/2)*np.ones(twist.shape))
 #plt.plot(x,- math.sin(theta)*h/2*np.ones(twist.shape))
-#plt.grid()
-#plt.plot(x,dyTE.T)
-#plt.show()
-#
-#plt.figure(2)
+plt.grid()
+#plt.plot(x,dygTE.T)
+plt.show()
+
+plt.figure(2)
+plt.title('z deflection of leading edge, numerical')
 #plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
 #plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
-#plt.grid()
-#plt.plot(x,dzLE.T)
-#plt.plot(x,dzTE.T)
-#plt.show()
+plt.grid()
+plt.plot(x,dzgLE.T)
+#plt.plot(x,dzgTE.T)
+plt.show()
+
+plt.figure(3)
+plt.title('y deflection of trailing edge, numerical')
+#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
+#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
+plt.grid()
+plt.plot(x,dygTE.T)
+plt.show()
+
+plt.figure(4)
+plt.title('z deflection of trailing edge, numerical')
+#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
+#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
+plt.grid()
+plt.plot(x,dzgTE.T)
+plt.show()
 
 
 
