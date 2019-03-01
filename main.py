@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
-import math
+import math as m
 from definitionboomarea import Boomarea
 from SVV import skin_init
 from cog import center_gravity, I_yy, I_zz, I_zznon, ideal_cog
@@ -131,68 +131,42 @@ def plotinit(values):
 
 
 dyTE,dyLE,dzTE,dzLE,x = deflection(parameters)
-theta = math.radians(parameters['theta'])
+theta = m.radians(parameters['theta'])
 twist = parameters['twist']
 
 
-dygLE = dyLE*math.cos(theta) - dzLE*math.sin(theta)
-dygTE = dyTE*math.cos(theta) - dzTE*math.sin(theta)
-dzgLE = dzLE*math.cos(theta) + dyLE*math.sin(theta)
-dzgTE = dzTE*math.cos(theta) + dyTE*math.sin(theta)
+dygLE = dyLE*m.cos(theta) - dzLE*m.sin(theta) - m.sin(theta)*h/2*np.ones(twist.T.shape)
+dygTE = dyTE*m.cos(theta) - dzTE*m.sin(theta) + m.sin(theta)*(c-h/2)*np.ones(twist.T.shape) 
+dzgLE = dzLE*m.cos(theta) + dyLE*m.sin(theta)+ m.cos(theta)*h/2*np.ones(twist.T.shape)
+dzgTE = dzTE*m.cos(theta) + dyTE*m.sin(theta)- m.cos(theta)*(c-h/2)*np.ones(twist.T.shape) 
 
-plt.figure(1)
-plt.title('y deflection of leading edge, numerical')
-plt.plot(x,dygLE.T)
-#plt.plot(x,math.sin(theta)*(c-h/2)*np.ones(twist.shape))
-#plt.plot(x,- math.sin(theta)*h/2*np.ones(twist.shape))
-plt.grid()
-#plt.plot(x,dygTE.T)
-plt.show()
-
-plt.figure(2)
-plt.title('z deflection of leading edge, numerical')
-#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
-#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
-plt.grid()
-plt.plot(x,dzgLE.T)
-#plt.plot(x,dzgTE.T)
-plt.show()
-
-plt.figure(3)
-plt.title('y deflection of trailing edge, numerical')
-#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
-#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
-plt.grid()
-plt.plot(x,dygTE.T)
-plt.show()
-
-plt.figure(4)
-plt.title('z deflection of trailing edge, numerical')
-#plt.plot(x,-math.cos(theta)*(c-h/2)*np.ones(twist.shape))
-#plt.plot(x,math.cos(theta)*h/2*np.ones(twist.shape))
-plt.grid()
-plt.plot(x,dzgTE.T)
-plt.show()
-
-
-
-
-
-
-
-#Z = plot(parameters, element_locations)
-#
-#
-#x = np.arange(0,len(parameters['normalstress'][0]))
-#fig= plt.figure()
-#for i in range(len(parameters['normalstress'][:,0])):
-#    plt.plot(x, parameters['normalstress'][i])
+plotdeflections(x,dygLE, dygTE, dzgLE, dzgTE)
+#plt.plot(x, dygLE.T)
+#plt.grid()
+#plt.savefig('y-deflection LE, numerical')
 #plt.show()
-
-
-
-
-
+#
+#fig = plt.figure(2)
+#plt.plot(x, dygTE.T)
+#plt.grid()
+#plt.savefig('y-deflection TE, numerical')
+#plt.show()
+#
+#
+#fig = plt.figure(2)
+#plt.plot(x, dygLE.T)
+#plt.grid()
+#plt.savefig('y-deflection LE, numerical')
+#plt.show()
+#
+#fig = plt.figure(2)
+#plt.plot(x, dygLE.T)
+#plt.grid()
+#plt.savefig('y deflection LE, numerical')
+#plt.show()
+#
+#fig = plt.figure(2)
+#
 
 
 

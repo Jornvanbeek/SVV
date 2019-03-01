@@ -42,7 +42,7 @@ skiprows=list(range(0,head))+[head+1,head+2]
 footer = 43
 df_dis = pd.read_fwf("../../F100/F100_ULC1.rpt",sep = '  ', skiprows = skiprows ,skipfooter = footer,skip_blank_lines=True, keep_default_na = False)
 
-dfdis_arr = np.array(df_dis, dtype = float)[:,[0,5,6,7,8]]
+dfdis_arr = np.array(df_dis[:3234], dtype = float)[:,[0,5,6,7,8]]
 
 
 
@@ -80,30 +80,31 @@ base2 = []
 xdisp =np.array([])
 ydisp =np.array([])
 zdisp =np.array([])
-for i in range(len(base)):
-    base[i].append(dfdis_arr[i,1])
-    base[i].append(dfdis_arr[i,2])
-    base[i].append(dfdis_arr[i,3])
-    base[i].append(dfdis_arr[i,4])
+for i in range(len(base)): #add the displacements to the base for each node
+    base[i].append(dfdis_arr[i,1]) #magnitude
+    base[i].append(dfdis_arr[i,2]) #Z
+    base[i].append(dfdis_arr[i,3]) #X
+    base[i].append(dfdis_arr[i,4]) #Y
     
 for v in df_array:
     if len(base[int(v[1])-1]) <9:
-        base[int(v[1])-1].append(v[-1])
+        base[int(v[1])-1].append(v[-1]) #add avg von mises stress
+        
 for i in range(len(base)):
     if len(base[i]) ==9:
      
-        base2.append(base[i])
+        base2.append(base[i]) #new list with only featured nodes
 
-multiplication_factor = 100
-for node in base2:
+multiplication_factor = 1
+for node in base2: #make separate lists to plot
     xs = np.append(xs,node[1])
     ys = np.append(ys,node[2])
     zs = np.append(zs,node[3])
-    val = np.append(val,node[4])
-    disp = np.append(disp,node[5])
-    xdisp = np.append(xdisp,node[6])
-    ydisp = np.append(ydisp,node[7])
-    zdisp = np.append(zdisp,node[8])
+    val = np.append(val,node[-1])
+    disp = np.append(disp,node[4])
+    xdisp = np.append(xdisp,node[5])
+    ydisp = np.append(ydisp,node[6])
+    zdisp = np.append(zdisp,node[7])
     
 
 
@@ -112,7 +113,7 @@ ydisp = ys+ydisp*multiplication_factor
 zdisp = zs+zdisp*multiplication_factor
 
 
-def scatter3d(x,y,z, cs, colorsMap='jet'):
+def scatter3d(x,y,z, cs, colorsMap='jet', title = None, save = False, savename = None):
     cm = plt.get_cmap(colorsMap)
     cNorm = matplotlib.colors.Normalize(vmin=min(cs), vmax=max(cs))
     scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
@@ -121,21 +122,72 @@ def scatter3d(x,y,z, cs, colorsMap='jet'):
     ax.scatter(x, y, z, c=scalarMap.to_rgba(cs))
     scalarMap.set_array(cs)
     fig.colorbar(scalarMap)
+    plt.title(title)
+    if save:
+        plt.savefig(savename, papertype = 'a0' )
     plt.show()
     
-##    
-#
-##ax.set_xlim(min(zs)-max(zs)*.5, max(zs)*1.5)
-##ax.set_ylim(min(xs)-max(xs)*.5, max(xs)*1.5)
-##ax.set_zlim(min(ys)-max(ys)*.5, max(ys)*1.5)
-scatter3d(zs,xs,ys, val)
-scatter3d(zs,xs,ys,disp)
-scatter3d(zs,xs,ydisp,disp)
-
-#fig = plt.figure()
-#ax = fig.add_subplot(111, projection='3d')
-#ax.plot_surface(zs,xs,np.vstack([ys,np.ones(len(ys))]))
 
 
 
+leading_edge = np.zeros(len(base2[0]))
+trailing_edge = np.zeros(len(base2[0]))
 
+
+for node in base2: 
+    if node[3]>80:
+        leading_edge = np.vstack([leading_edge, node])
+        
+        
+    elif node[3]<-424:
+        trailing_edge = np.vstack([trailing_edge, node])
+
+#leading_edge = np.sort(leading_edge[1:])
+#trailing_edge = np.sort(trailing_edge[1:])
+
+def plotdeflections(x,dygLE, dygTE, dzgLE, dzgTE):
+#    fig = plt.figure()
+#    plt.plot(leading_edge[:,1], leading_edge[ + leading_edge[:,7])
+#    plt.plot(trailing_edge[:,1], trailing_edge[:,7])
+#    plt.title('Trailing and Leading edge deflection in x-direction')
+#    plt.savefig('LE_TE_x')
+    
+    fig = plt.figure(1)
+#    plt.plot(leading_edge[:,1], leading_edge[:,2]+leading_edge[:,8])
+    plt.grid()
+    plt.scatter(trailing_edge[1:,1]/1000, (trailing_edge[1:,6])/1000)
+    plt.xlabel("Length of list (number)")
+    plt.ylabel("Time taken (seconds)")
+    
+    plt.plot(x, dygTE.T)
+    plt.title('y-deflection of trailing edge')
+    plt.savefig('TE_y')
+    
+    fig = plt.figure(2)
+    plt.grid()
+    plt.scatter(trailing_edge[1:,1]/1000, (trailing_edge[1:,3]+trailing_edge[1:,5])/1000)
+    plt.plot(x, dzgTE.T)
+#    plt.plot(trailing_edge[:,1],(trailing_edge[:,3]- trailing_edge[:,6])/1000)
+    plt.title('z-deflection of trailing edge')
+    plt.savefig('TE_z')
+    
+    fig = plt.figure(3)
+#    plt.plot(leading_edge[:,1], leading_edge[:,2]+leading_edge[:,8])
+    plt.grid()
+    plt.scatter(leading_edge[1:,1]/1000, (leading_edge[1:,6])/1000)
+    plt.plot(x, dygLE.T)
+    plt.title('y-deflection of leading edge')
+    plt.savefig('LE_y')
+    
+    fig = plt.figure(4)
+    plt.grid()
+    plt.scatter(leading_edge[1:,1]/1000, (leading_edge[1:,3]+leading_edge[1:,5])/1000)
+    plt.plot(x, dzgLE.T)
+#    plt.plot(trailing_edge[:,1],(trailing_edge[:,3]- trailing_edge[:,6])/1000)
+    plt.title('z-deflection of leading edge')
+    plt.savefig('LE_z')
+    
+    
+    scatter3d(zdisp,xdisp,ydisp, val)
+    
+   
